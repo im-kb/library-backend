@@ -22,7 +22,7 @@ public class QuestionGet {
     @RequestMapping(value = "/quiz/question", method = RequestMethod.GET)
     public ResponseEntity<quiz.Questions>test(){
         final quiz.Questions quizValues = new quiz.Questions();
-
+        LOGGER.info("### cokolwiek");
         LOGGER.info("### Question : {} , Answers : {} , Points : {} ",
                 quizValues.getQuestionText(),
                 quizValues.getCorrectAnswers(),
