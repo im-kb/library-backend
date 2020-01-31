@@ -1,8 +1,9 @@
-package quiz;
+package com.demo.springboot.domain.dto;
+
 
 public class Questions {
     private String id;
-    private String questionText;
+    private String question;
     private String answerA;
     private String answerB;
     private String answerC;
@@ -13,14 +14,23 @@ public class Questions {
     public Questions(){
     }
 
-    public Questions(String id, String questionText, String answerA, String answerB, String answerC, String answerD, String correctAnswers, String points) {
+    public Questions(String id, String question, String answerA, String answerB, String answerC, String answerD, String correctAnswers, String points) {
         this.id=id;
-        this.questionText = questionText;
+        this.question = question;
         this.answerA = answerA;
         this.answerB = answerB;
         this.answerC = answerC;
         this.answerD = answerD;
         this.correctAnswers = correctAnswers;
+        this.points = points;
+    }
+
+    public Questions(String question, String answerA, String answerB, String answerC, String answerD, String points) {
+        this.question = question;
+        this.answerA = answerA;
+        this.answerB = answerB;
+        this.answerC = answerC;
+        this.answerD = answerD;
         this.points = points;
     }
 
@@ -35,8 +45,8 @@ public class Questions {
     /**
      * @return the questionText
      */
-    public String getQuestionText() {
-        return questionText;
+    public String getQuestion() {
+        return question;
     }
 
 
