@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class ReturnQuestion {
-    String points;
+    int points;
     String question;
     String[] answers=new String[4];
     boolean lastQuestion;
@@ -15,11 +15,11 @@ public class ReturnQuestion {
         answers[1]=answerB;
         answers[2]=answerC;
         answers[3]=answerD;
-        this.points=points;
+        this.points=Integer.parseInt(points);
         this.lastQuestion=lastQuestion;
     }
 
-    public String getPoints() {
+    public int getPoints() {
         return points;
     }
 
