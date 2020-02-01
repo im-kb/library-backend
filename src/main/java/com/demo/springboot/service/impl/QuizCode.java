@@ -16,7 +16,7 @@ public class QuizCode {
     private static String SEPERATOR = "/n";
     private static final String SPLIT_CHAR = ";";
 
-    public static ArrayList<Questions> readData() { // wczytywywanie csv
+    public static ArrayList<Questions> readData(){ // wczytywywanie csv
         BufferedReader br = null;
         questionsList = new ArrayList<>();
         try {
@@ -28,6 +28,7 @@ public class QuizCode {
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Plik jest pusty");
+
         } catch (FileNotFoundException e) {
             System.out.println("Nie znaleziono pliku");
         } catch (IOException e) {

@@ -33,18 +33,21 @@ public class QuestionGet {
             ifLast=false;
         }
 
-        ArrayList<Questions> quiz = new ArrayList<Questions>(QuizCode.readData());
-        final ReturnQuestion quizValues = new ReturnQuestion(
-                quiz.get(id).getQuestion(),
-                quiz.get(id).getAnswerA(),
-                quiz.get(id).getAnswerB(),
-                quiz.get(id).getAnswerC(),
-                quiz.get(id).getAnswerD(),
-                quiz.get(id).getPoints(),
-        ifLast);
+        try {
+            ArrayList<Questions> quiz = new ArrayList<Questions>(QuizCode.readData());
+            final ReturnQuestion quizValues = new ReturnQuestion(
+                    quiz.get(id).getQuestion(),
+                    quiz.get(id).getAnswerA(),
+                    quiz.get(id).getAnswerB(),
+                    quiz.get(id).getAnswerC(),
+                    quiz.get(id).getAnswerD(),
+                    quiz.get(id).getPoints(),
+                    ifLast);
+            return new ResponseEntity<ReturnQuestion>(quizValues, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-
-        return new ResponseEntity<ReturnQuestion>(quizValues, HttpStatus.OK);
     }
 }
 
