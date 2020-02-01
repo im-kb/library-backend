@@ -11,11 +11,11 @@ public class Questions {
     private String correctAnswers;
     private String points;
 
-    public Questions(){
+    public Questions() {
     }
 
     public Questions(String id, String question, String answerA, String answerB, String answerC, String answerD, String correctAnswers, String points) {
-        this.id=id;
+        this.id = id;
         this.question = question;
         this.answerA = answerA;
         this.answerB = answerB;
@@ -95,4 +95,6 @@ public class Questions {
     public String getPoints() {
         return points;
     }
+
+
 }
