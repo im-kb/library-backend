@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @RestController
 public class GetAnswersFromClient {
@@ -21,18 +22,12 @@ public class GetAnswersFromClient {
         System.out.print("Dobre odpowiedzi to pytania o id "+answerDto.getQuestionId()+" to: ");
         ArrayList<Questions> quiz = new ArrayList<Questions>(QuizCode.readData());//pobiera correct answers do aktualnego id pytania (id pobrane od klienta)
         System.out.println(quiz.get(answerDto.getQuestionId()).getCorrectAnswers());//pobiera correct answers do aktualnego id pytania (id pobrane od klienta)
-
+        Arrays.sort(answerDto.getSelectedAnswers());
        String yourAnswer="";
        for(int i=0;i<answerDto.getSelectedAnswers().length;i++){
-           if(i<answerDto.getSelectedAnswers().length-1){
-               yourAnswer=yourAnswer +answerDto.getSelectedAnswers()[i]+",";
-           }
-           else{
-               yourAnswer=yourAnswer+answerDto.getSelectedAnswers()[i];
-           }
+           yourAnswer=yourAnswer +answerDto.getSelectedAnswers()[i];
        }
        int plus=QuizCode.checkAnswer(yourAnswer,quiz.get(answerDto.getQuestionId()).getCorrectAnswers(),Integer.parseInt(quiz.get(answerDto.getQuestionId()).getPoints()));
-
         yourPoints = yourPoints + plus;
         System.out.println("Twoj wynik wynosi teraz: "+yourPoints);
         System.out.print("dziala klasa GetAnswersFromClient: ");

@@ -44,20 +44,19 @@ public class QuizCode {
         return questionsList;
     }
     public static int checkAnswer(String yourAnswer, String correctAnswers, int points) {
-        yourAnswer = yourAnswer.replaceAll(",", "");
         correctAnswers = correctAnswers.replaceAll(",", "");
 
         char[] yourAnswerArray = yourAnswer.toCharArray();
         char[] correctAnswersArray = correctAnswers.toCharArray();
 
-        int countCorrect=0;
-        for (int i = 0; i < correctAnswers.length(); i++) {
-            for (int j = 0; j < yourAnswer.length(); j++) {
-                if (yourAnswerArray[j] == correctAnswersArray[i]) {
+        int countCorrect = 0;
+        if (yourAnswer.length() == correctAnswers.length()) {
+            for (int i = 0; i < yourAnswer.length(); i++) {
+                if(yourAnswerArray[i]==correctAnswersArray[i]){
                     countCorrect++;
-                }
             }
         }
+    }
         if (countCorrect==correctAnswers.length()){
             return points;
         }
