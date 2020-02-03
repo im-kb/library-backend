@@ -18,22 +18,26 @@ public class SendQuestionsToClient {
     @RequestMapping(value = "/quiz/question/{id}", method = RequestMethod.GET)
     public ResponseEntity<ReturnQuestion> test(@PathVariable("id") Integer id) {
 
-        ArrayList<Questions> quiz = new ArrayList<Questions>(QuizCode.readData());
-        boolean ifLast;
-        if (id == quiz.size()-1) {
-            ifLast = true;
-        } else {
-            ifLast = false;
+        try {
+            ArrayList<Questions> quiz = new ArrayList<Questions>(QuizCode.readData());
+            boolean ifLast;
+            if (id == quiz.size()-1) {
+                ifLast = true;
+            } else {
+                ifLast = false;
+            }
+            final ReturnQuestion quizValues = new ReturnQuestion(
+                    quiz.get(id).getQuestion(),
+                    quiz.get(id).getAnswerA(),
+                    quiz.get(id).getAnswerB(),
+                    quiz.get(id).getAnswerC(),
+                    quiz.get(id).getAnswerD(),
+                    quiz.get(id).getPoints(),
+                    ifLast);
+            return new ResponseEntity<ReturnQuestion>(quizValues, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        final ReturnQuestion quizValues = new ReturnQuestion(
-                quiz.get(id).getQuestion(),
-                quiz.get(id).getAnswerA(),
-                quiz.get(id).getAnswerB(),
-                quiz.get(id).getAnswerC(),
-                quiz.get(id).getAnswerD(),
-                quiz.get(id).getPoints(),
-                ifLast);
-        return new ResponseEntity<ReturnQuestion>(quizValues, HttpStatus.OK);
 
     }
 }
