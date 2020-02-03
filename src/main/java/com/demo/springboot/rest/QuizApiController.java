@@ -55,6 +55,8 @@ public class QuizApiController {
     @PostMapping(value = "/quiz/report")
     public ResponseEntity<ArrayList<AnswerDto>> test3(@RequestBody ArrayList<AnswerDto> answerDto) {
         LOGGER.info(Arrays.toString(answerDto.get(0).getSelectedAnswers()));
+        LOGGER.info(Arrays.toString(answerDto.get(1).getSelectedAnswers()));
+        LOGGER.info(Arrays.toString(answerDto.get(2).getSelectedAnswers()));
         return new ResponseEntity <ArrayList<AnswerDto>>(answerDto, HttpStatus.OK);
     }
 }
