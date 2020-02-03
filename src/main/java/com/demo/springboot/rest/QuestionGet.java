@@ -1,6 +1,7 @@
 package com.demo.springboot.rest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.demo.springboot.domain.dto.AnswerDto;
 import com.demo.springboot.domain.dto.Questions;
@@ -37,9 +38,10 @@ public class QuestionGet {
     }
     @PutMapping(value = "/quiz/calculate")
     public ResponseEntity<AnswerDto>test2(@RequestBody AnswerDto answerDto) {
-        LOGGER.info(String.valueOf(answerDto.getQuestionId()));
-        LOGGER.info(answerDto.getSelectedAnswers());
-        LOGGER.info(String.valueOf(answerDto.getLastQuestion()));
+       // LOGGER.info(String.valueOf(answerDto.getQuestionId()));
+      //  LOGGER.info(String.valueOf(answerDto.getLastQuestion()));
+       // LOGGER.info(Arrays.toString(answerDto.getSelectedAnswers()));
+        LOGGER.info(answerDto.toString());
         return new ResponseEntity<AnswerDto>(answerDto, HttpStatus.OK);
     }
 
