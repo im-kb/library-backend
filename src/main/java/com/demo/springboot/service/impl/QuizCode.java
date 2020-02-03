@@ -12,7 +12,7 @@ public class QuizCode {
 
     private static ArrayList<Questions> questionsList;
 
-    private static final String fileName = "C:\\Users\\Józef\\IdeaProjects\\project_06_koderzy_server\\src\\main\\java\\com\\demo\\springboot\\domain\\csv\\quiz.csv";
+    private static final String fileName = "src/main/java/com/demo/springboot/domain/csv/quiz.csv";
     private static String SEPERATOR = "/n";
     private static final String SPLIT_CHAR = ";";
 
