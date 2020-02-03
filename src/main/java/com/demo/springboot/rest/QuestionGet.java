@@ -37,7 +37,9 @@ public class QuestionGet {
     }
     @PutMapping(value = "/quiz/calculate")
     public ResponseEntity<AnswerDto>test2(@RequestBody AnswerDto answerDto) {
+        LOGGER.info(String.valueOf(answerDto.getQuestionId()));
         LOGGER.info(answerDto.getSelectedAnswers());
+        LOGGER.info(String.valueOf(answerDto.getLastQuestion()));
         return new ResponseEntity<AnswerDto>(answerDto, HttpStatus.OK);
     }
 

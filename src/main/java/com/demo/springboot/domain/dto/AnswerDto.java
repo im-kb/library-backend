@@ -1,7 +1,9 @@
 package com.demo.springboot.domain.dto;
 
-public class AnswerDto{
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
+public class AnswerDto{
     private int questionId;
     private boolean lastQuestion;
     private String selectedAnswers;
@@ -9,11 +11,6 @@ public class AnswerDto{
     public AnswerDto() {
     }
 
-    public AnswerDto(int questionId, boolean lastQuestion, String selectedAnswers) {
-        this.questionId=questionId;
-        this.lastQuestion = lastQuestion;
-        this.selectedAnswers = selectedAnswers;
-    }
 
     public boolean getLastQuestion() {
         return lastQuestion;
@@ -27,7 +24,7 @@ public class AnswerDto{
         return selectedAnswers;
     }
 
-    public void setSelectedAnswers(String answers) {
+    public void setSelectedAnswers(String selectedAnswers) {
         this.selectedAnswers = selectedAnswers;
     }
 
