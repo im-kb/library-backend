@@ -44,12 +44,8 @@ public class QuizApiController {
     public ResponseEntity<AnswerDto> test2(@RequestBody AnswerDto answerDto) {
         System.out.print("Dobre odpowiedzi to pytania o id "+answerDto.getQuestionId()+" to: ");
         System.out.println(quiz.get(answerDto.getQuestionId()).getCorrectAnswers());//pobiera correct answers do aktualnego id pytania (id pobrane od klienta)
-        Arrays.sort(answerDto.getSelectedAnswers());
-       String yourAnswer="";
-       for(int i=0;i<answerDto.getSelectedAnswers().length;i++){
-           yourAnswer=yourAnswer +answerDto.getSelectedAnswers()[i];
-       }
-       int plus=QuizCode.checkAnswer(yourAnswer,quiz.get(answerDto.getQuestionId()).getCorrectAnswers(),Integer.parseInt(quiz.get(answerDto.getQuestionId()).getPoints()));
+
+       int plus=QuizCode.checkAnswer(answerDto.getSelectedAnswers(),quiz.get(answerDto.getQuestionId()).getCorrectAnswers(),Integer.parseInt(quiz.get(answerDto.getQuestionId()).getPoints()));
         yourPoints = yourPoints + plus;
         System.out.println("Twoj wynik wynosi teraz: "+yourPoints);
         System.out.print("dziala klasa GetAnswersFromClient: ");

@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class QuizCode {
 
@@ -43,15 +44,20 @@ public class QuizCode {
         }
         return questionsList;
     }
-    public static int checkAnswer(String yourAnswer, String correctAnswers, int points) {
+    public static int checkAnswer(Integer[] yourAnswer, String correctAnswers, int points) {
+        Arrays.sort(yourAnswer);
+        String yourAnswers="";
+        for(int i=0;i<yourAnswer.length;i++){
+            yourAnswers=yourAnswers +yourAnswer[i];
+        }
         correctAnswers = correctAnswers.replaceAll(",", "");
 
-        char[] yourAnswerArray = yourAnswer.toCharArray();
+        char[] yourAnswerArray = yourAnswers.toCharArray();
         char[] correctAnswersArray = correctAnswers.toCharArray();
 
         int countCorrect = 0;
-        if (yourAnswer.length() == correctAnswers.length()) {
-            for (int i = 0; i < yourAnswer.length(); i++) {
+        if (yourAnswers.length() == correctAnswers.length()) {
+            for (int i = 0; i < yourAnswers.length(); i++) {
                 if(yourAnswerArray[i]==correctAnswersArray[i]){
                     countCorrect++;
             }
