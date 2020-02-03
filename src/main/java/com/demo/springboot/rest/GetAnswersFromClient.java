@@ -15,43 +15,32 @@ import java.util.ArrayList;
 @RestController
 public class GetAnswersFromClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(GetAnswersFromClient.class);
-
+     private static int yourPoints=0;
     @PutMapping(value = "/quiz/calculate")
     public ResponseEntity<AnswerDto> test2(@RequestBody AnswerDto answerDto) {
         System.out.print("Dobre odpowiedzi to pytania o id "+answerDto.getQuestionId()+" to: ");
         ArrayList<Questions> quiz = new ArrayList<Questions>(QuizCode.readData());//pobiera correct answers do aktualnego id pytania (id pobrane od klienta)
         System.out.println(quiz.get(answerDto.getQuestionId()).getCorrectAnswers());//pobiera correct answers do aktualnego id pytania (id pobrane od klienta)
 
+       String yourAnswer="";
+       for(int i=0;i<answerDto.getSelectedAnswers().length;i++){
+           if(i<answerDto.getSelectedAnswers().length-1){
+               yourAnswer=yourAnswer +answerDto.getSelectedAnswers()[i]+",";
+           }
+           else{
+               yourAnswer=yourAnswer+answerDto.getSelectedAnswers()[i];
+           }
+       }
+       int plus=QuizCode.checkAnswer(yourAnswer,quiz.get(answerDto.getQuestionId()).getCorrectAnswers(),Integer.parseInt(quiz.get(answerDto.getQuestionId()).getPoints()));
 
+        yourPoints = yourPoints + plus;
+        System.out.println("Twoj wynik wynosi teraz: "+yourPoints);
         System.out.print("dziala klasa GetAnswersFromClient: ");
         LOGGER.info(answerDto.toString());
         return new ResponseEntity<AnswerDto>(answerDto, HttpStatus.OK);
 
     }
 
-    public class CheckAnswer { //sprawdzanie odpowiedzi
-
-        public float checkAnswer(String yourAnswer, String correctAnswers) {
-            float countCorrect = 0;
-            if (yourAnswer.length() > 7) {
-                yourAnswer = yourAnswer.substring(0, 7);
-            }
-            yourAnswer = yourAnswer.replaceAll(",", "");
-            correctAnswers = correctAnswers.replaceAll(",", "");
-
-            char[] yourAnswerArray = yourAnswer.toCharArray();
-            char[] correctAnswersArray = correctAnswers.toCharArray();
-
-            for (int i = 0; i < correctAnswers.length(); i++) {
-                for (int j = 0; j < yourAnswer.length(); j++) {
-                    if (yourAnswerArray[j] == correctAnswersArray[i]) {
-                        countCorrect++;
-                    }
-                }
-            }
-            return countCorrect / correctAnswers.length();
-        }
-    }
 
 }
 

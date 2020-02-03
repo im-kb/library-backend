@@ -12,7 +12,7 @@ public class QuizCode {
 
     private static ArrayList<Questions> questionsList;
 
-    private static final String fileName = "C:\\Users\\Marshall\\IdeaProjects\\project_06_koderzy_server\\src\\main\\java\\com\\demo\\springboot\\domain\\csv\\quiz.csv";
+    private static final String fileName = "C:\\Users\\Józef\\IdeaProjects\\project_06_koderzy_server\\src\\main\\java\\com\\demo\\springboot\\domain\\csv\\quiz.csv";
     private static String SEPERATOR = "/n";
     private static final String SPLIT_CHAR = ";";
 
@@ -43,28 +43,29 @@ public class QuizCode {
         }
         return questionsList;
     }
-    public class CheckAnswer { //sprawdzanie odpowiedzi
+    public static int checkAnswer(String yourAnswer, String correctAnswers, int points) {
+        yourAnswer = yourAnswer.replaceAll(",", "");
+        correctAnswers = correctAnswers.replaceAll(",", "");
 
-        public float checkAnswer(String yourAnswer, String correctAnswers) {
-            float countCorrect = 0;
-            if (yourAnswer.length() > 7) {
-                yourAnswer = yourAnswer.substring(0, 7);
-            }
-            yourAnswer = yourAnswer.replaceAll(",", "");
-            correctAnswers = correctAnswers.replaceAll(",", "");
+        char[] yourAnswerArray = yourAnswer.toCharArray();
+        char[] correctAnswersArray = correctAnswers.toCharArray();
 
-            char[] yourAnswerArray = yourAnswer.toCharArray();
-            char[] correctAnswersArray = correctAnswers.toCharArray();
-
-            for (int i = 0; i < correctAnswers.length(); i++) {
-                for (int j = 0; j < yourAnswer.length(); j++) {
-                    if (yourAnswerArray[j] == correctAnswersArray[i]) {
-                        countCorrect++;
-                    }
+        int countCorrect=0;
+        for (int i = 0; i < correctAnswers.length(); i++) {
+            for (int j = 0; j < yourAnswer.length(); j++) {
+                if (yourAnswerArray[j] == correctAnswersArray[i]) {
+                    countCorrect++;
                 }
             }
-            return countCorrect / correctAnswers.length();
         }
+        if (countCorrect==correctAnswers.length()){
+            return points;
+        }
+        else{
+            return 0;
+        }
+
     }
 
-}
+    }
+
