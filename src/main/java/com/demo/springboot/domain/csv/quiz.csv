@@ -1,7 +1,7 @@
-0;Jakiego koloru jest czerwony maluch?;Bialego;Czarnego;Ciemnoczerwonego;Czerwonego;1;5
-1;Czego nie da sie zmoczyc?;Kubka;Niczego;Wody;Swetra;2,3;4
-2;Jak na imie mial Napoleon?;Adam;Napoleon;Gabrysia;Fryderyk;1,2,3;3
-3;Statek ma 150 lokci dlugosci. Ile lokci ma kapitan?;150;Raczej dwa;300;Raczej dwa;4;3
+0;2+2=?;4;sqrt(16);2^2;2*2;1,2,3,4;4
+1;Jak nazywa sie tworca jezyka Java?;Yukihiro Matsumoto;James Gosling;Nick Jonas;Anders Hejlsberg;2;1
+2;Jezyki obiektowe z podanych to?;C;C++;Java;Matlab;2,3;2
+3;Ktory skrot klawiatury zapisze plik?;Ctrl+z;Ctrl+s;Ctrl+c;Ctrl+x;2;1
 4;Jakiego koloru jest czerwony maluch?;Bialego;Czarnego;Ciemnoczerwonego;Czerwonego;1,2,3;5
 5;Czego nie da sie zmoczyc?;Kubka;Niczego;Wody;Swetra;2,3;4
 6;Jak na imie mial Napoleon?;Adam;Napoleon;Gabrysia;Fryderyk;1,2,3;3

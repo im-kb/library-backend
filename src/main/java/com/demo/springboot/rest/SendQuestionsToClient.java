@@ -17,13 +17,14 @@ public class SendQuestionsToClient {
 
     @RequestMapping(value = "/quiz/question/{id}", method = RequestMethod.GET)
     public ResponseEntity<ReturnQuestion> test(@PathVariable("id") Integer id) {
+
+        ArrayList<Questions> quiz = new ArrayList<Questions>(QuizCode.readData());
         boolean ifLast;
-        if (id == 9) {
+        if (id == quiz.size()-1) {
             ifLast = true;
         } else {
             ifLast = false;
         }
-        ArrayList<Questions> quiz = new ArrayList<Questions>(QuizCode.readData());
         final ReturnQuestion quizValues = new ReturnQuestion(
                 quiz.get(id).getQuestion(),
                 quiz.get(id).getAnswerA(),
