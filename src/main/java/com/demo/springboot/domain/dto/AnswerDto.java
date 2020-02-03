@@ -41,7 +41,7 @@ public class AnswerDto{
     @Override
     public String toString() {
         return "{\"AnswerData\":{"
-                + "\"questionId\":\"" + questionId + "\""
+                + "\"questionId\":\"" + questionId + ""
                 + ", \"lastQuestion\":\"" + lastQuestion + "\""
                 + ", \"selectedAnswers\":\"" + Arrays.toString(selectedAnswers) + "\""
                 + "}}";
