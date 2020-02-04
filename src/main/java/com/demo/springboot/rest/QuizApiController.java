@@ -61,7 +61,6 @@ public class QuizApiController {
     }
     @PostMapping(value = "/quiz/report")
     public ResponseEntity<ArrayList<AnswerDto>> test3(@RequestBody ArrayList<AnswerDto> answerDto) {
-        //LOGGER.info(Arrays.toString(answerDto.get(0).getSelectedAnswers()));
 
         LOGGER.info("Tworzenie raportu:");
 
@@ -70,9 +69,8 @@ public class QuizApiController {
         ErrorDto errorMessage = new ErrorDto(ErrorMessage.ERROR_PATH.getErrorMessage());
         HttpStatus errorCode = ErrorMessage.ERROR_PATH.getErrorCode();
 
-        //return fileData != null ? new ResponseEntity<>(HttpStatus.CREATED) :
-               // new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(answerDto, HttpStatus.OK);
+        return fileData != null ? new ResponseEntity<>(HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        //return new ResponseEntity<>(answerDto, HttpStatus.OK);
     }
 }
 

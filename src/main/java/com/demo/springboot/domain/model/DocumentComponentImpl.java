@@ -2,7 +2,6 @@ package com.demo.springboot.domain.model;
 
 import com.demo.springboot.domain.dto.AnswerDto;
 import com.demo.springboot.domain.dto.Questions;
-import com.demo.springboot.domain.dto.UserDataDto;
 import com.demo.springboot.service.impl.QuizCode;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
@@ -26,17 +25,27 @@ public class DocumentComponentImpl implements DocumentComponent {
             ArrayList<Questions> quiz = new ArrayList<Questions>(QuizCode.readData());
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(fileDestination));
             document.open();
-            PdfPTable table = new PdfPTable(3);
-            table.setWidths(new int[]{1, 1, 2});
-            table.addCell(createCell("Id pytania", 2, Element.ALIGN_LEFT));
-            table.addCell(createCell("Odpowiedzi klienta", 2, Element.ALIGN_LEFT));
-            table.addCell(createCell("Poprawne odpowiedzi", 2, Element.ALIGN_LEFT));
+            PdfPTable table = new PdfPTable(4);
+            table.setWidths(new int[]{1, 1, 1,1});
+            table.addCell(createCell("QUESTION ID:", 2, Element.ALIGN_CENTER));
+            table.addCell(createCell("CLIENT'S ANSWERS:", 2, Element.ALIGN_CENTER));
+            table.addCell(createCell("CORRECT ANSWERS", 2, Element.ALIGN_CENTER));
+            table.addCell(createCell("IF CORRECT", 2, Element.ALIGN_CENTER));
+
 
             for(int i=0;i<answerDto.size();i++) {
                 String id=""+i;
-                table.addCell(createCell(id, 1, Element.ALIGN_LEFT));
-                table.addCell(createCell(Arrays.toString(answerDto.get(i).getSelectedAnswers()), 1, Element.ALIGN_LEFT));
-                table.addCell(createCell(quiz.get(i).getCorrectAnswers(), 1, Element.ALIGN_LEFT));
+                table.addCell(createCell(id, 1, Element.ALIGN_CENTER));
+                table.addCell(createCell(Arrays.toString(answerDto.get(i).getSelectedAnswers()), 1, Element.ALIGN_CENTER));
+                table.addCell(createCell(quiz.get(i).getCorrectAnswers(), 1, Element.ALIGN_CENTER));
+
+                if(QuizCode.checkAnswer(answerDto.get(i).getSelectedAnswers(),quiz.get(i).getCorrectAnswers(),Integer.parseInt(quiz.get(i).getPoints()))>0){
+                    table.addCell(createCell("GOOD ANSWER", 1, Element.ALIGN_CENTER));
+                }
+                else{
+                    table.addCell(createCell("WRONG ANSWER", 1, Element.ALIGN_CENTER));
+                }
+
             }
             document.add(table);
 

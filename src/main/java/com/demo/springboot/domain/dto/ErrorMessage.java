@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorMessage {
 
     ERROR_PATH(
-            "Niepoprawana sciezka dla pliku. Prosze zmienic sciezke dla stalej PATH!",
+            "Niepoprawana sciezka dla zapisu pliku. Prosze zmienic sciezke dla stalej PATH!",
             HttpStatus.NOT_FOUND
     );
 
