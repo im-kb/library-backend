@@ -1,9 +1,13 @@
 package com.demo.springboot.domain.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class FileData {
+
     private String fileName;
     private Long size;
     private ZonedDateTime creationDate;
@@ -13,16 +17,7 @@ public class FileData {
         this.size = size;
         this.creationDate = creationDate;
     }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public String getCreationDate() {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(creationDate);
-    }
+    public String getFileName() {return fileName;}
+    public Long getSize() {return size;}
+    public ZonedDateTime getCreationDate() {return creationDate; }
 }

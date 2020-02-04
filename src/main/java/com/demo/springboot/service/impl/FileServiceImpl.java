@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 @Service
 public class FileServiceImpl implements FileService {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(FileServiceImpl.class);
     @Autowired
     private DocumentComponent documentComponent;
@@ -34,7 +33,6 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             LOGGER.error("i can't save data");
         }
-
         return null;
     }
     private Long getFileSize(String fileDestination) throws IOException {

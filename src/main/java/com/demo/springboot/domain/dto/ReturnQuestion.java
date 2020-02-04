@@ -8,7 +8,6 @@ public class ReturnQuestion {
     String question;
     String[] answers=new String[4];
     boolean lastQuestion;
-
     public ReturnQuestion(String question,String answerA, String answerB, String answerC, String answerD,String points, boolean lastQuestion) {
         this.question=question;
         answers[0]=answerA;
@@ -18,22 +17,16 @@ public class ReturnQuestion {
         this.points=Integer.parseInt(points);
         this.lastQuestion=lastQuestion;
     }
-
     public int getPoints() {
         return points;
     }
-
     public String getQuestion() {
         return question;
     }
-
     public String[] getAnswers() {
         return answers;
     }
-
     public boolean isLastQuestion() {
         return lastQuestion;
     }
-
-
 }

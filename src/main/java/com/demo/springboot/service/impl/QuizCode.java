@@ -17,6 +17,12 @@ public class QuizCode {
     private static String SEPERATOR = "/n";
     private static final String SPLIT_CHAR = ";";
 
+    public static int getRequiredPoints() {
+        return REQUIRED_POINTS;
+    }
+
+    private static final int REQUIRED_POINTS=(countMax(readData())/2);
+
     public static ArrayList<Questions> readData() { // wczytywywanie csv
         BufferedReader br = null;
         questionsList = new ArrayList<>();
@@ -51,18 +57,19 @@ public class QuizCode {
             yourAnswers=yourAnswers +yourAnswer[i];
         }
         correctAnswers = correctAnswers.replaceAll(",", "");
-
         char[] yourAnswerArray = yourAnswers.toCharArray();
         char[] correctAnswersArray = correctAnswers.toCharArray();
-
         int countCorrect = 0;
-        if (yourAnswers.length() == correctAnswers.length()) {
-            for (int i = 0; i < yourAnswers.length(); i++) {
-                if(yourAnswerArray[i]==correctAnswersArray[i]){
+        if (yourAnswers.length() == correctAnswers.length())
+        {
+            for (int i = 0; i < yourAnswers.length(); i++)
+            {
+                if(yourAnswerArray[i]==correctAnswersArray[i])
+                {
                     countCorrect++;
+                }
             }
         }
-    }
         if (countCorrect==correctAnswers.length()){
             return points;
         }
@@ -71,7 +78,24 @@ public class QuizCode {
         }
 
     }
+    public static int countMax(ArrayList<Questions> quiz){
+        int maxPoints=0;
+        for(int i=0;i<quiz.size();i++){
+            maxPoints = maxPoints + Integer.parseInt(quiz.get(i).getPoints());
+        }
+        return maxPoints;
+    }
 
+
+    public static boolean ifPassed(int yourScore){
+        if (yourScore>=REQUIRED_POINTS){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
 
 
     }

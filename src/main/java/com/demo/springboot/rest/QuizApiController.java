@@ -1,6 +1,4 @@
 package com.demo.springboot.rest;
-import com.demo.springboot.domain.dto.ErrorDto;
-import com.demo.springboot.domain.dto.ErrorMessage;
 import com.demo.springboot.domain.dto.FileData;
 import com.demo.springboot.service.FileService;
 import org.slf4j.Logger;
@@ -17,14 +15,14 @@ import java.util.ArrayList;
 @RestController
 public class QuizApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuizApiController.class);
-    private static final String PATH = "C://pdf//"; // dla linux / unix
-
+    private static final String PATH = "C://pdf//";
+    private static int yourPoints=0;
+    ArrayList<Questions> quiz = new ArrayList<Questions>(QuizCode.readData());
     @Autowired
     private FileService fileService;
 
+    public static int getYourPoints() { return yourPoints;}
 
-    private static int yourPoints=0;
-    ArrayList<Questions> quiz = new ArrayList<Questions>(QuizCode.readData());
     @RequestMapping(value = "/quiz/question/{id}", method = RequestMethod.GET)
     public ResponseEntity<ReturnQuestion>test(@PathVariable("id") Integer id) {
         try {
@@ -49,28 +47,24 @@ public class QuizApiController {
     }
     @PutMapping(value = "/quiz/calculate")
     public ResponseEntity<AnswerDto> test2(@RequestBody AnswerDto answerDto) {
-        System.out.print("Dobre odpowiedzi to pytania o id "+answerDto.getQuestionId()+" to: ");
-        System.out.println(quiz.get(answerDto.getQuestionId()).getCorrectAnswers());//pobiera correct answers do aktualnego id pytania (id pobrane od klienta)
-
-       int plus=QuizCode.checkAnswer(answerDto.getSelectedAnswers(),quiz.get(answerDto.getQuestionId()).getCorrectAnswers(),Integer.parseInt(quiz.get(answerDto.getQuestionId()).getPoints()));
+        int plus=QuizCode.checkAnswer(answerDto.getSelectedAnswers(),quiz.get(answerDto.getQuestionId()).getCorrectAnswers(),Integer.parseInt(quiz.get(answerDto.getQuestionId()).getPoints()));
         yourPoints = yourPoints + plus;
-        System.out.println("Twoj wynik wynosi teraz: "+yourPoints);
-        System.out.print("dziala klasa GetAnswersFromClient: ");
         LOGGER.info(answerDto.toString());
         return new ResponseEntity<AnswerDto>(answerDto, HttpStatus.OK);
     }
+
     @PostMapping(value = "/quiz/report")
     public ResponseEntity<ArrayList<AnswerDto>> test3(@RequestBody ArrayList<AnswerDto> answerDto) {
-
         LOGGER.info("Tworzenie raportu:");
-
         FileData fileData = fileService.createFile(answerDto, PATH);
-
-        ErrorDto errorMessage = new ErrorDto(ErrorMessage.ERROR_PATH.getErrorMessage());
-        HttpStatus errorCode = ErrorMessage.ERROR_PATH.getErrorCode();
-
-        return fileData != null ? new ResponseEntity<>(HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        //return new ResponseEntity<>(answerDto, HttpStatus.OK);
+        if(QuizCode.ifPassed(QuizApiController.getYourPoints())){
+            LOGGER.info("Wynik quizu jest pozytywny.");
+            return new ResponseEntity<>(answerDto, HttpStatus.OK);
+        }
+        else{
+            LOGGER.info("Wynik quizu jest negatywny.");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
 
