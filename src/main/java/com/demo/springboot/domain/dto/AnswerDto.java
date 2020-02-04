@@ -9,17 +9,9 @@ public class AnswerDto {
     private boolean lastQuestion;
     private Integer[] selectedAnswers;
 
-    public AnswerDto() {
-    }
-
-    public Integer[] getSelectedAnswers() {
-        return selectedAnswers;
-    }
-
-    public int getQuestionId() {
-        return questionId;
-    }
-
+    public AnswerDto() { }
+    public Integer[] getSelectedAnswers() {return selectedAnswers;}
+    public int getQuestionId() { return questionId;}
     @Override
     public String toString() {
         return "{\"AnswerData\":{"

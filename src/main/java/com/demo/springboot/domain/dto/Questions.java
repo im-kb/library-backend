@@ -21,35 +21,12 @@ public class Questions {
         this.points = points;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public String getAnswerA() {
-        return answerA;
-    }
-
-    public String getAnswerB() {
-        return answerB;
-    }
-
-    public String getAnswerC() {
-        return answerC;
-    }
-
-    public String getAnswerD() {
-        return answerD;
-    }
-
-    public String getCorrectAnswers() {
-        return correctAnswers;
-    }
-
-    public String getPoints() {
-        return points;
-    }
+    public String getId() { return id; }
+    public String getQuestion() {return question;}
+    public String getAnswerA() {return answerA;}
+    public String getAnswerB() { return answerB;}
+    public String getAnswerC() { return answerC;}
+    public String getAnswerD() { return answerD;}
+    public String getCorrectAnswers() {return correctAnswers;}
+    public String getPoints() { return points;}
 }

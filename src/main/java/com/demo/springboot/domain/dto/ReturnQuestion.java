@@ -18,19 +18,9 @@ public class ReturnQuestion {
         this.points = Integer.parseInt(points);
         this.lastQuestion = lastQuestion;
     }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public String[] getAnswers() {
-        return answers;
-    }
-
+    public int getPoints() { return points;}
+    public String getQuestion() { return question;}
+    public String[] getAnswers() { return answers;}
     public boolean isLastQuestion() {
         return lastQuestion;
     }
