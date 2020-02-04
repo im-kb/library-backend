@@ -15,7 +15,7 @@ import java.util.ArrayList;
 @RestController
 public class QuizApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuizApiController.class);
-    private static final String PATH = "C://pdf//";
+    private static final String PATH = "pdfResults/";
     private static int yourPoints=0;
     ArrayList<Questions> quiz = new ArrayList<Questions>(QuizCode.readData());
     @Autowired
