@@ -1,5 +1,6 @@
 package com.demo.springboot.service.impl;
 
+import com.demo.springboot.domain.dto.AnswerDto;
 import com.demo.springboot.domain.dto.FileData;
 import com.demo.springboot.domain.dto.UserDataDto;
 import com.demo.springboot.domain.model.DocumentComponent;
@@ -15,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,14 +31,14 @@ public class FileServiceImpl implements FileService {
     private DocumentComponent documentComponent;
 
     @Override
-    public FileData createFile(UserDataDto userDataDto, String path) {
-        String fileName = userDataDto.getFirstName() + userDataDto.getLastName() + "_" + ZonedDateTime.now().toEpochSecond() + ".pdf";
+    public FileData createFile(ArrayList<AnswerDto> answerDto, String path) {
+        String fileName ="quiz_" + ZonedDateTime.now().toEpochSecond() + ".pdf";
         String fileDestination = path + fileName;
 
         try {
 
             Files.createDirectories(Paths.get(path));
-            documentComponent.createDocument(userDataDto, fileDestination);
+            documentComponent.createDocument(answerDto, fileDestination);
 
             FileData fileData = new FileData(fileName, getFileSize(fileDestination), ZonedDateTime.now());
             resource.saveOne(fileData, path);

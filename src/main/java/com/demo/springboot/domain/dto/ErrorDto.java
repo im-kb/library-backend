@@ -8,8 +8,12 @@ import lombok.experimental.FieldDefaults;
 /** Klasa odpowiedzialna za przechowywanie informacji o bledach w aplikacji */
 
 @Getter
-@AllArgsConstructor
+//@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ErrorDto {
     String errorMessage;
+
+    public ErrorDto(String errorMessage) {
+        this.errorMessage=errorMessage;
+    }
 }
