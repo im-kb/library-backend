@@ -12,7 +12,6 @@ import com.demo.springboot.domain.dto.*;
 import com.demo.springboot.service.impl.QuizCode;
 import java.util.ArrayList;
 
-
 @RestController
 public class QuizApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuizApiController.class);
@@ -21,9 +20,7 @@ public class QuizApiController {
     ArrayList<Questions> quiz = new ArrayList<Questions>(QuizCode.readData());
     @Autowired
     private FileService fileService;
-
     public static int getYourPoints() { return yourPoints;}
-
     @RequestMapping(value = "/quiz/question/{id}", method = RequestMethod.GET)
     public ResponseEntity<ReturnQuestion>test(@PathVariable("id") Integer id) {
         try {
