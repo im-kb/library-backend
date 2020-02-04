@@ -1,4 +1,5 @@
 package com.demo.springboot.service.impl;
+
 import com.demo.springboot.domain.dto.AnswerDto;
 import com.demo.springboot.domain.dto.FileData;
 import com.demo.springboot.domain.model.DocumentComponent;
@@ -14,7 +15,6 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -40,5 +40,4 @@ public class FileServiceImpl implements FileService {
         BasicFileAttributes fileAttributes = Files.readAttributes(filePath, BasicFileAttributes.class);
         return fileAttributes.size();
     }
-
 }
