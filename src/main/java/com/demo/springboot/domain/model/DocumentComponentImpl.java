@@ -50,7 +50,7 @@ public class DocumentComponentImpl implements DocumentComponent {
             else{
                 document.add(new Phrase("Test failed. Score:"+QuizApiController.getYourPoints()+"/"+QuizCode.countMax(quiz)+"\n"));
             }
-            document.add(new Phrase("Required score to pass: "+QuizCode.getRequiredPoints()+"\n"));
+            document.add(new Phrase("Required points to pass: "+QuizCode.getRequiredPoints()+"\n"));
             document.add(new Phrase("Full report below: \n"));
             document.add(table);
             setBackgroundAsGradient(document, writer);
