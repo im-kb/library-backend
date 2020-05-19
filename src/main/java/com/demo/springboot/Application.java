@@ -13,4 +13,5 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
     //mvn -q exec:java
+    //mvn clean compile exec:java
 }

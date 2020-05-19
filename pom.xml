@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <start-class>com.demo.springboot.rest.DBController</start-class>
     </properties>
 
     <dependencies>
@@ -68,7 +69,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <configuration>
-                    <mainClass>com.demo.springboot.rest.DBController</mainClass>
+                    <mainClass>${start-class}</mainClass>
                 </configuration>
             </plugin>
         </plugins>

@@ -11,7 +11,7 @@ public class DBController {
         String url = "jdbc:postgresql://rogue.db.elephantsql.com:5432/cargbzfv";
         String user = "cargbzfv";
         String password = "wjhaujNlFknUAm2GQ3jz6HOh9UNLYRB8";
-        System.out.println("DZIALA SQLLL\n");
+        System.out.println("\nDZIALA SQLLL\n");
 
         //////////////////////////ZAPYTANIE O WYDAWNICTWO
         System.out.println("Wydawnictwo::::::::::::::::::::::::");
