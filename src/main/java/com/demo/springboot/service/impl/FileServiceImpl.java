@@ -2,7 +2,7 @@ package com.demo.springboot.service.impl;
 
 import com.demo.springboot.domain.dto.AnswerDto;
 import com.demo.springboot.domain.dto.FileData;
-import com.demo.springboot.domain.model.DocumentComponent;
+import com.demo.springboot.domain.model_DO_PDF_GENERATORA.DocumentComponent;
 import com.demo.springboot.service.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
