@@ -28,6 +28,21 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+
+            <!-->/Following is the maven dependency for the JSON-simple library -->
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <!-->/Following is the maven dependency for the POSGRE  library -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.12</version>
+        </dependency>
+
         <!-- iText - biblioteka, ktora umozliwia tworzenie i manipulowanie dokumentami w formacie PDF -->
         <dependency>
             <groupId>com.itextpdf</groupId>
@@ -47,6 +62,16 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <!-- In order to run command line applications from Maven, we can uset the following Maven plugin.-->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <mainClass>com.demo.springboot.rest.DBController</mainClass>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
 </project>
