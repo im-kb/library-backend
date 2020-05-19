@@ -24,35 +24,35 @@ public class Ksiazka {
         this.dostepnosc = dostepnosc;
     }
 
-    public String idKsiazki() {
+    public String getIdKsiazki() {
         return idKsiazki;
     }
 
-    public String tytul() {
+    public String getTytul() {
         return tytul;
     }
 
-    public String idAutora() {
+    public String getIdAutora() {
         return idAutora;
     }
 
-    public String wydawnictwo() {
+    public String getWydawnictwo() {
         return wydawnictwo;
     }
 
-    public String temat() {
+    public String getTemat() {
         return temat;
     }
 
-    public String jezykKsiazki() {
+    public String getJezykKsiazki() {
         return jezykKsiazki;
     }
 
-    public String rokWydania() {
+    public String getRokWydania() {
         return rokWydania;
     }
 
-    public String dostepnosc() {
+    public String getDostepnosc() {
         return dostepnosc;
     }
 

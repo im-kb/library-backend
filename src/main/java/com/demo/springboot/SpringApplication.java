@@ -1,6 +1,5 @@
 package com.demo.springboot;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -8,9 +7,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @Configuration
 @SpringBootApplication
-public class Application {
+public class SpringApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        org.springframework.boot.SpringApplication.run(SpringApplication.class, args);
     }
     //mvn -q exec:java
     //mvn clean compile exec:java
