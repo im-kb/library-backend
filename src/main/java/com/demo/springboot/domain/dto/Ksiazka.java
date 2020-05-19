@@ -1,5 +1,7 @@
 package com.demo.springboot.domain.dto;
 
+import java.util.Arrays;
+
 public class Ksiazka {
     private String idKsiazki;
     private String tytul;
@@ -8,9 +10,9 @@ public class Ksiazka {
     private String temat;
     private String jezykKsiazki;
     private String rokWydania;
-    private String  dostepnosc;
+    private String dostepnosc;
 
-    public Ksiazka(String  idKsiazki, String tytul, String  idAutora, String wydawnictwo, String temat,
+    public Ksiazka(String idKsiazki, String tytul, String idAutora, String wydawnictwo, String temat,
                    String jezykKsiazki, String rokWydania, String dostepnosc) {
         this.idKsiazki = idKsiazki;
         this.tytul = tytul;
@@ -52,5 +54,13 @@ public class Ksiazka {
 
     public String dostepnosc() {
         return dostepnosc;
+    }
+
+    public String toString() {
+        return "{\"KSIAZKA::\":{"
+                + "\"tytul\":\"" + tytul + ""
+                + ", \"autor\":\"" + idAutora + "\""
+                + ", \"temat\":\"" + temat + "\""
+                + "}}" + "\n";
     }
 }

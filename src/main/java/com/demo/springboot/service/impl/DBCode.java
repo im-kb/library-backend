@@ -1,7 +1,6 @@
 package com.demo.springboot.service.impl;
 
 import com.demo.springboot.domain.dto.Ksiazka;
-import com.demo.springboot.domain.dto.Questions;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,17 +25,16 @@ public class DBCode {
             String columnValue = "";
             while (rs.next()) {
                 for (int i = 1; i <= columnsNumber; i++) {
-                    columnValue = columnValue+ rs.getString(i);
+                    columnValue = columnValue + rs.getString(i);
                     columnValue = columnValue + ",";
-
-                    String[] tab = SEPERATOR.split(SPLIT_CHAR);
-                    Ksiazka ks = new Ksiazka(tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], tab[6], tab[7]);
-                    ksiazkaList.add(ks);
                 }
                 columnValue = columnValue + ".";
-                columnValue="";
+                SEPERATOR = columnValue;
+                String[] tab = SEPERATOR.split(SPLIT_CHAR);
+                Ksiazka ks = new Ksiazka(tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], tab[6], tab[7]);
+                ksiazkaList.add(ks);
+                columnValue = "";
             }
-
         } catch (SQLException ex) {
             Logger lgr = Logger.getLogger(DBCode.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
@@ -45,42 +43,13 @@ public class DBCode {
     }
 
     public static void main(String[] args) {
-       //ksiazkaList=readKsiazki(); TODO:: CZEMU TO WYPIERDALA LOL
-
-        try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement("SELECT * FROM KSIAZKA");
-             ResultSet rs = pst.executeQuery()) {
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnsNumber = rsmd.getColumnCount();
-            String columnValue = "";
-            while (rs.next()) {
-                for (int i = 1; i <= columnsNumber; i++) {
-                    columnValue = columnValue+ rs.getString(i);
-                    columnValue = columnValue + ",";
-                }
-                columnValue = columnValue + ".";
-                System.out.print(columnValue);
-                System.out.println("");
-                columnValue="";
-            }
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(DBCode.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        //////////////////////////ZAPYTANIE O ksiazka
+        ksiazkaList = readKsiazki();
+        System.out.println(ksiazkaList.toString());
     }
+}
 
 
-
-
-
-
-
-
-
-
-
-/* KOPIA
+/* KOPIA DO WYSWIETLANIA
     public static void main(String[] args) {
         //////////////////////////ZAPYTANIE O KSIAZKA
         System.out.println("KSIAZKA::::::::::::::::::::::::");
@@ -104,5 +73,4 @@ public class DBCode {
         }
         System.out.print("-------------------------------------");
         //////////////////////////ZAPYTANIE O ksiazka
-    }*/
-}
+ }*/
