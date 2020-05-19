@@ -14,4 +14,5 @@ public class Application {
     }
     //mvn -q exec:java
     //mvn clean compile exec:java
+    //http://127.0.0.1:8080/quiz/question/1 // GET
 }

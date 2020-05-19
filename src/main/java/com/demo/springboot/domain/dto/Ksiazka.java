@@ -1,17 +1,17 @@
 package com.demo.springboot.domain.dto;
 
 public class Ksiazka {
-    private int idKsiazki;
+    private String idKsiazki;
     private String tytul;
-    private int idAutora;
+    private String idAutora;
     private String wydawnictwo;
     private String temat;
     private String jezykKsiazki;
     private String rokWydania;
-    private boolean dostepnosc;
+    private String  dostepnosc;
 
-    public Ksiazka(int idKsiazki, String tytul, int idAutora, String wydawnictwo, String temat,
-                   String jezykKsiazki, String rokWydania, boolean dostepnosc) {
+    public Ksiazka(String  idKsiazki, String tytul, String  idAutora, String wydawnictwo, String temat,
+                   String jezykKsiazki, String rokWydania, String dostepnosc) {
         this.idKsiazki = idKsiazki;
         this.tytul = tytul;
         this.idAutora = idAutora;
@@ -22,7 +22,7 @@ public class Ksiazka {
         this.dostepnosc = dostepnosc;
     }
 
-    public int idKsiazki() {
+    public String idKsiazki() {
         return idKsiazki;
     }
 
@@ -30,7 +30,7 @@ public class Ksiazka {
         return tytul;
     }
 
-    public int idAutora() {
+    public String idAutora() {
         return idAutora;
     }
 
@@ -50,7 +50,7 @@ public class Ksiazka {
         return rokWydania;
     }
 
-    public boolean dostepnosc() {
+    public String dostepnosc() {
         return dostepnosc;
     }
 }
