@@ -18,22 +18,33 @@ public class KsiegarniaApiController {
     ArrayList<Ksiazka> ksiazki = new ArrayList<Ksiazka>(DBCode.readKsiazki());
     private static final Logger LOGGER = LoggerFactory.getLogger(KsiegarniaApiController.class);
 
-    @GetMapping("/ksiazka")
-    public @ResponseBody ResponseEntity<ReturnKsiazka> ReturnKsiazka() {
+    @GetMapping(value="/ksiazka/{id}")
+    public @ResponseBody ResponseEntity<Ksiazka> returnKsiazka(@PathVariable Integer id) {
+        id=id-1;
         try {
-            final ReturnKsiazka ksiazkiData = new ReturnKsiazka(
-                    ksiazki.get(1).getIdKsiazki(),
-                    ksiazki.get(1).getTytul(),
-                    ksiazki.get(1).getIdAutora(),
-                    ksiazki.get(1).getIdWydawnictwa(),
-                    ksiazki.get(1).getTemat(),
-                    ksiazki.get(1).getJezykKsiazki(),
-                    ksiazki.get(1).getRokWydania(),
-                    ksiazki.get(1).getDostepnosc());
-            return new ResponseEntity<ReturnKsiazka>(ksiazkiData, HttpStatus.OK);
+            final Ksiazka ksiazkiData = new Ksiazka(
+                    ksiazki.get(id).getIdKsiazki(),
+                    ksiazki.get(id).getTytul(),
+                    ksiazki.get(id).getIdAutora(),
+                    ksiazki.get(id).getIdWydawnictwa(),
+                    ksiazki.get(id).getTemat(),
+                    ksiazki.get(id).getJezykKsiazki(),
+                    ksiazki.get(id).getRokWydania(),
+                    ksiazki.get(id).getDostepnosc());
+            return new ResponseEntity<Ksiazka>(ksiazkiData, HttpStatus.OK);
         } catch (
                 Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-}
+    @GetMapping(value="/ksiazki")
+    public @ResponseBody ResponseEntity<ArrayList<Ksiazka>>returnKsiazki(){
+        try {
+            ArrayList<Ksiazka>ksiazkiData=ksiazki;
+            return new ResponseEntity<ArrayList<Ksiazka>>(ksiazkiData, HttpStatus.OK);
+        } catch (
+                Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    }
