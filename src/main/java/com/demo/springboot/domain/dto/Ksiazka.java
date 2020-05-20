@@ -1,23 +1,21 @@
 package com.demo.springboot.domain.dto;
 
-import java.util.Arrays;
-
 public class Ksiazka {
     private String idKsiazki;
     private String tytul;
     private String idAutora;
-    private String wydawnictwo;
+    private String idWydawnictwa;
     private String temat;
     private String jezykKsiazki;
     private String rokWydania;
     private String dostepnosc;
 
-    public Ksiazka(String idKsiazki, String tytul, String idAutora, String wydawnictwo, String temat,
+    public Ksiazka(String idKsiazki, String tytul, String idAutora, String idWydawnictwa, String temat,
                    String jezykKsiazki, String rokWydania, String dostepnosc) {
         this.idKsiazki = idKsiazki;
         this.tytul = tytul;
         this.idAutora = idAutora;
-        this.wydawnictwo = wydawnictwo;
+        this.idWydawnictwa = idWydawnictwa;
         this.temat = temat;
         this.jezykKsiazki = jezykKsiazki;
         this.rokWydania = rokWydania;
@@ -36,8 +34,8 @@ public class Ksiazka {
         return idAutora;
     }
 
-    public String getWydawnictwo() {
-        return wydawnictwo;
+    public String getIdWydawnictwa() {
+        return idWydawnictwa;
     }
 
     public String getTemat() {

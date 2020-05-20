@@ -1,23 +1,52 @@
 package com.demo.springboot.domain.dto;
 
-import lombok.AllArgsConstructor;
-
 //@AllArgsConstructor
 public class ReturnKsiazka {
-    String idKsiazki, tytul, idAutora, wydawnictwo, temat, jezykKsiazki, rokWydania, dostepnosc;
+    String idKsiazki, tytul, autor, wydawnictwo, temat, jezykKsiazki, rokWydania, dostepnosc;
 
-
-
-
-    public ReturnKsiazka(String idKsiazki, String tytul, String idAutora, String wydawnictwo, String temat,
+    public ReturnKsiazka(String idKsiazki, String tytul, String autor, String wydawnictwo, String temat,
                          String jezykKsiazki, String rokWydania, String dostepnosc) {
         this.idKsiazki = idKsiazki;
         this.tytul = tytul;
-        this.idAutora = idAutora;
+        this.autor = autor;
         this.wydawnictwo = wydawnictwo;
         this.temat = temat;
         this.jezykKsiazki = jezykKsiazki;
         this.rokWydania = rokWydania;
         this.dostepnosc = dostepnosc;
     }
+
+    public String getIdKsiazki() {
+        return idKsiazki;
+    }
+
+    public String getTytul() {
+        return tytul;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public String getWydawnictwo() {
+        return wydawnictwo;
+    }
+
+    public String getTemat() {
+        return temat;
+    }
+
+    public String getJezykKsiazki() {
+        return jezykKsiazki;
+    }
+
+    public String getRokWydania() {
+        return rokWydania;
+    }
+
+    public String getDostepnosc() {
+        return dostepnosc;
+    }
 }
+
+
