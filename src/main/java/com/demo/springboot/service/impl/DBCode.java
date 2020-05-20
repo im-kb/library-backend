@@ -17,8 +17,13 @@ public class DBCode {
 
     public static ArrayList<Ksiazka> readKsiazki() { //wczytywywanie ksiazek
         ksiazkaList = new ArrayList<>();
+        String query = "SELECT k.id_ksiazki,k.tytul,\n" +
+                "a.imie || ' '|| a.nazwisko || ' ' || a.narodowosc ||' '|| a.okres_tworzenia ||' '|| a.jezyk as AUTOR,\n" +
+                "w.nazwa || ' ' ||w.miasto as WYDAWNICTWO,\n" +
+                "k.temat,k.jezyk_ksiazki,k.rok_wydania,k.dostepnosc\n" +
+                "from ksiazka k natural join autor a natural join wydawnictwo w";
         try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement("SELECT * FROM KSIAZKA");
+             PreparedStatement pst = con.prepareStatement(query);
              ResultSet rs = pst.executeQuery()) {
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnsNumber = rsmd.getColumnCount();
@@ -47,7 +52,6 @@ public class DBCode {
         System.out.println(ksiazkaList.toString());
     }
 }
-
 
 /* KOPIA DO WYSWIETLANIA
     public static void main(String[] args) {
