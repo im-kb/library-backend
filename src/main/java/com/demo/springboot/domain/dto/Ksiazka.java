@@ -3,23 +3,25 @@ package com.demo.springboot.domain.dto;
 public class Ksiazka {
     private String idKsiazki;
     private String tytul;
-    private String idAutora;
-    private String idWydawnictwa;
+    private String autor;
+    private String wydawnictwo;
     private String temat;
     private String jezykKsiazki;
     private String rokWydania;
     private String dostepnosc;
+    private String opis;
 
-    public Ksiazka(String idKsiazki, String tytul, String idAutora, String idWydawnictwa, String temat,
-                   String jezykKsiazki, String rokWydania, String dostepnosc) {
+    public Ksiazka(String idKsiazki, String tytul, String autor, String wydawnictwo, String temat,
+                   String jezykKsiazki, String rokWydania, String dostepnosc, String opis) {
         this.idKsiazki = idKsiazki;
         this.tytul = tytul;
-        this.idAutora = idAutora;
-        this.idWydawnictwa = idWydawnictwa;
+        this.autor = autor;
+        this.wydawnictwo = wydawnictwo;
         this.temat = temat;
         this.jezykKsiazki = jezykKsiazki;
         this.rokWydania = rokWydania;
         this.dostepnosc = dostepnosc;
+        this.opis = opis;
     }
 
     public String getIdKsiazki() {
@@ -30,12 +32,12 @@ public class Ksiazka {
         return tytul;
     }
 
-    public String getIdAutora() {
-        return idAutora;
+    public String getAutor() {
+        return autor;
     }
 
-    public String getIdWydawnictwa() {
-        return idWydawnictwa;
+    public String getWydawnictwo() {
+        return wydawnictwo;
     }
 
     public String getTemat() {
@@ -54,11 +56,7 @@ public class Ksiazka {
         return dostepnosc;
     }
 
-    public String toString() {
-        return "{\"KSIAZKA::\":{"
-                + "\"tytul\":\"" + tytul + ""
-                + ", \"autor\":\"" + idAutora + "\""
-                + ", \"temat\":\"" + temat + "\""
-                + "}}" + "\n";
+    public String getOpis() {
+        return opis;
     }
 }

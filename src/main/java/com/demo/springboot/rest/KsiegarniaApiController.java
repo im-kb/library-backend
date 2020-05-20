@@ -10,41 +10,44 @@ import com.demo.springboot.domain.dto.*;
 
 import java.util.ArrayList;
 
+
 @RestController
 @RequestMapping("/ksiegarnia")
 public class KsiegarniaApiController {
-
-
     ArrayList<Ksiazka> ksiazki = new ArrayList<Ksiazka>(DBCode.readKsiazki());
     private static final Logger LOGGER = LoggerFactory.getLogger(KsiegarniaApiController.class);
 
-    @GetMapping(value="/ksiazka/{id}")
-    public @ResponseBody ResponseEntity<Ksiazka> returnKsiazka(@PathVariable Integer id) {
-        id=id-1;
+    @GetMapping(value = "/ksiazka/{id}")
+    public @ResponseBody
+    ResponseEntity<Ksiazka> returnKsiazka(@PathVariable Integer id) {
+        id = id - 1;
         try {
             final Ksiazka ksiazkiData = new Ksiazka(
                     ksiazki.get(id).getIdKsiazki(),
                     ksiazki.get(id).getTytul(),
-                    ksiazki.get(id).getIdAutora(),
-                    ksiazki.get(id).getIdWydawnictwa(),
+                    ksiazki.get(id).getAutor(),
+                    ksiazki.get(id).getWydawnictwo(),
                     ksiazki.get(id).getTemat(),
                     ksiazki.get(id).getJezykKsiazki(),
                     ksiazki.get(id).getRokWydania(),
-                    ksiazki.get(id).getDostepnosc());
+                    ksiazki.get(id).getDostepnosc(),
+                    ksiazki.get(id).getOpis());
             return new ResponseEntity<Ksiazka>(ksiazkiData, HttpStatus.OK);
         } catch (
                 Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @GetMapping(value="/ksiazki")
-    public @ResponseBody ResponseEntity<ArrayList<Ksiazka>>returnKsiazki(){
+
+    @GetMapping(value = "/ksiazki")
+    public @ResponseBody
+    ResponseEntity<ArrayList<Ksiazka>> returnKsiazki() {
         try {
-            ArrayList<Ksiazka>ksiazkiData=ksiazki;
+            ArrayList<Ksiazka> ksiazkiData = ksiazki;
             return new ResponseEntity<ArrayList<Ksiazka>>(ksiazkiData, HttpStatus.OK);
         } catch (
                 Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    }
+}

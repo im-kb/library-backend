@@ -12,15 +12,15 @@ public class DBCode {
     private static String url = "jdbc:postgresql://rogue.db.elephantsql.com:5432/cargbzfv";
     private static String user = "cargbzfv";
     private static String password = "wjhaujNlFknUAm2GQ3jz6HOh9UNLYRB8";
-    private static String SEPERATOR = ".";
+    private static String SEPERATOR = "/n";
     private static final String SPLIT_CHAR = ",";
 
     public static ArrayList<Ksiazka> readKsiazki() { //wczytywywanie ksiazek
         ksiazkaList = new ArrayList<>();
         String query = "SELECT k.id_ksiazki,k.tytul,\n" +
-                "a.imie || ' '|| a.nazwisko || ' ' || a.narodowosc ||' '|| a.okres_tworzenia ||' '|| a.jezyk as AUTOR,\n" +
+                "a.imie || ' ' || a.nazwisko as AUTOR,\n" +
                 "w.nazwa || ' ' ||w.miasto as WYDAWNICTWO,\n" +
-                "k.temat,k.jezyk_ksiazki,k.rok_wydania,k.dostepnosc\n" +
+                "k.temat,k.jezyk_ksiazki,k.rok_wydania,k.dostepnosc,k.opis\n" +
                 "from ksiazka k natural join autor a natural join wydawnictwo w";
         try (Connection con = DriverManager.getConnection(url, user, password);
              PreparedStatement pst = con.prepareStatement(query);
@@ -33,10 +33,10 @@ public class DBCode {
                     columnValue = columnValue + rs.getString(i);
                     columnValue = columnValue + ",";
                 }
-                columnValue = columnValue + ".";
+                columnValue = columnValue + "\n";
                 SEPERATOR = columnValue;
                 String[] tab = SEPERATOR.split(SPLIT_CHAR);
-                Ksiazka ks = new Ksiazka(tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], tab[6], tab[7]);
+                Ksiazka ks = new Ksiazka(tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], tab[6], tab[7], tab[8]);
                 ksiazkaList.add(ks);
                 columnValue = "";
             }
