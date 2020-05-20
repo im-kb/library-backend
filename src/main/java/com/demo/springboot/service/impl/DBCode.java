@@ -47,8 +47,6 @@ public class DBCode {
     }
 
     public static void main(String[] args) {
-        ksiazkaList = readKsiazki();
-        System.out.println(ksiazkaList.toString());
     }
 }
 
