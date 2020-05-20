@@ -14,14 +14,15 @@ import java.util.ArrayList;
 @RequestMapping("/ksiegarnia")
 public class KsiegarniaApiController {
 
-
     ArrayList<Ksiazka> ksiazki = new ArrayList<Ksiazka>(DBCode.readKsiazki());
     private static final Logger LOGGER = LoggerFactory.getLogger(KsiegarniaApiController.class);
 
-    @GetMapping("/ksiazka")
-    public @ResponseBody ResponseEntity<ReturnKsiazka> ReturnKsiazka() {
+    @GetMapping("/ksiazki")
+    public @ResponseBody
+    ResponseEntity<ReturnKsiazka> ReturnKsiazka() {
         try {
-            final ReturnKsiazka ksiazkiData = new ReturnKsiazka(
+            ReturnKsiazka ksiazkiData = new ReturnKsiazka(
+                   // while(ksiazki.get(0)!= null)
                     ksiazki.get(1).getIdKsiazki(),
                     ksiazki.get(1).getTytul(),
                     ksiazki.get(1).getIdAutora(),
