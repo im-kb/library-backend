@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DBCode {
+public class DBManager {
     private static ArrayList<Ksiazka> ksiazkaList;
     private static String url = "jdbc:postgresql://rogue.db.elephantsql.com:5432/cargbzfv";
     private static String user = "cargbzfv";
@@ -40,7 +40,7 @@ public class DBCode {
                 columnValue = "";
             }
         } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(DBCode.class.getName());
+            Logger lgr = Logger.getLogger(DBManager.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return ksiazkaList;

@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <start-class>com.demo.springboot.service.impl.DBCode</start-class>
+        <start-class>com.demo.springboot.service.impl.DBManager</start-class>
     </properties>
 
     <dependencies>

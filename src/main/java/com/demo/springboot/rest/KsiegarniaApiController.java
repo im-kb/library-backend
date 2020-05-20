@@ -1,6 +1,6 @@
 package com.demo.springboot.rest;
 
-import com.demo.springboot.service.impl.DBCode;
+import com.demo.springboot.service.impl.DBManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/ksiegarnia")
 public class KsiegarniaApiController {
-    ArrayList<Ksiazka> ksiazki = new ArrayList<Ksiazka>(DBCode.readKsiazki());
+    ArrayList<Ksiazka> ksiazki = new ArrayList<Ksiazka>(DBManager.readKsiazki());
     private static final Logger LOGGER = LoggerFactory.getLogger(KsiegarniaApiController.class);
 
     @GetMapping(value = "/ksiazka/{id}")
