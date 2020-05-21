@@ -4,14 +4,11 @@ import com.demo.springboot.domain.dto.Ksiazka;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Timer;
 
 
 public class DBManager {
-    private static Timer timer = new Timer();/////////////////////////////////////////TODO:::
     private static ArrayList<Ksiazka> ksiazkaList;
     private static String url = "jdbc:postgresql://rogue.db.elephantsql.com:5432/cargbzfv";
     private static String user = "cargbzfv";
@@ -51,12 +48,6 @@ public class DBManager {
     }
 
     public static void main(String[] args) {
-        timer.scheduleAtFixedRate(new TimerTask() {/////////////////////////////////////////TODO:::
-            public void run() {
-                readKsiazki();
-                System.out.println("WCZYTANO KSIAZKI");
-            }
-        }, 0, 5000);
     }
 }
 /* KOPIA DO WYSWIETLANIA
