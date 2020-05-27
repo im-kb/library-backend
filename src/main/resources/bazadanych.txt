@@ -1,0 +1,88 @@
+CREATE TABLE wydawnictwo (
+	  id_wydawnictwa INTEGER PRIMARY KEY,
+	  nazwa CHARACTER VARYING(40),
+	  miasto CHARACTER VARYING(20)
+);
+
+INSERT INTO wydawnictwo(id_wydawnictwa, nazwa, miasto) VALUES
+	(1,'Helion','Warszawa'),
+	(2,'Nowa Era','Poznan'),
+	(3,'Exlibris','Krakow'),
+	(4,'Egmont Polska','Warszawa'),
+	(5,'Swiat Ksiazki','Lublin');
+
+CREATE TABLE klient (
+  id_klienta INTEGER PRIMARY KEY,
+  nazwisko CHARACTER VARYING(60),
+  imie CHARACTER VARYING(40),
+  kod_pocztowy CHARACTER VARYING(6),
+  miejscowosc CHARACTER VARYING(50),
+  ulica CHARACTER VARYING(50),
+  nr_domu CHARACTER VARYING(7),
+  telefon CHARACTER VARYING(12),
+  login CHARACTER VARYING(20),
+   haslo CHARACTER VARYING(10)
+);
+
+INSERT INTO klient(id_klienta, nazwisko,imie,kod_pocztowy,miejscowosc,ulica,nr_domu,telefon,login,haslo) VALUES
+(1,'Konrad','Bączek','33-170','Tuchów','Dluga','51C','73121651174','kondziu12','haslokondz'),
+(2,'Kamil','Filipiewicz','33-170','Tuchów','Krotka','12D','69052391863','kamilabudzik','gabigabi'),
+(3,'Bartłomiej','Hamernik','43-120','Plesna','Srednia','532','69021371863','golabartus','haselko'),
+(4,'Piotr','Kura','13-20','Tarnowiec','Fajna','15','97111394612','piotruss','mimi23'),
+(5,'Dominik','Dominikowskii','33-150','Krakow','Najdluzsza','55A','97101094612','dominikdd3','xdxd56'),
+(6,'Dominik','Dominikowskii','33-10','Warszawa','Bardzo długa','12D','97101094612','dominikdd4','ccc66'),
+(7,'Karol','Karolowskii','33-100','Tarnow','Strasznie krotka','12C','94042081645','kalolek76','cc5');
+
+
+CREATE TABLE autor (
+  id_autora INTEGER PRIMARY KEY,
+  nazwisko CHARACTER VARYING(50),
+  imie CHARACTER VARYING(30),
+  narodowosc CHARACTER VARYING(30),
+  okres_tworzenia CHARACTER VARYING(35),
+  jezyk CHARACTER VARYING(30)
+);
+
+insert INTO autor(id_autora,imie,nazwisko,narodowosc,okres_tworzenia,jezyk) VALUES
+(1,'Bruce','Eckel','USA','XXI wiek','angielski'),
+(2,'Craig','Walls','USA','XX wiek','angielski'),
+(3,'Kamil','Duda','Polska','XIX wiek','polski'),
+(4,'Konrad','Franczyszkiewicz','Polska','XXI wiek','polski'),
+(5,'Piotr','Nowak','Szwajcaria','X wiek','niemiecki');
+
+
+CREATE TABLE ksiazka (
+  id_ksiazki INTEGER PRIMARY KEY,
+  tytul CHARACTER VARYING(100),
+  id_autora INTEGER,
+  id_wydawnictwa INTEGER,
+  temat CHARACTER VARYING(30),
+  jezyk_ksiazki CHARACTER VARYING(15),
+  rok_wydania CHARACTER VARYING(4),
+  dostepnosc BOOLEAN,
+  opis text,
+CONSTRAINT ksiazka_fk_a FOREIGN KEY(id_autora) REFERENCES autor(id_autora),
+CONSTRAINT ksiazka_fk_b FOREIGN KEY(id_wydawnictwa) REFERENCES wydawnictwo(id_wydawnictwa)
+);
+
+INSERT INTO ksiazka(id_ksiazki, tytul,id_autora,id_wydawnictwa,temat,jezyk_ksiazki,rok_wydania,dostepnosc, opis)VALUES
+(1,'Thinking in Java. Edycja polska. Wydanie IV',1,1,'Programowanie','polski','2009',true, 'Książka "Thinking in Java. Edycja polska. Wydanie IV" zawiera szczegółowe omówienie zasad programowania w Javie. Przeznaczona jest dla początkujących programistów i dla ekspertów. Przystępnie prezentuje zarówno zagadnienia podstawowe, jak i zaawansowane. Dziesiątki przykładów ułatwiają zrozumienie każdego tematu. Wszystko to sprawia, że poznajemy prawdziwą Javę -- uniwersalną, czytelną, niezależną od platformy systemowej. Czytając tę książkę, dowiesz się, co jest niezbędne do tworzenia wydajnych i bezpiecznych aplikacji w Javie.'),
+(2,'Spring w akcji. Wydanie V',2,1,'Programowanie','polski','2009',true, 'Spring jest frameworkiem ułatwiającym tworzenie nowoczesnych aplikacji w Javie. To narzędzie, które dynamicznie się rozwija i z każdym nowym wydaniem zapewnia programistom kolejne, ekscytujące możliwości. Piąta wersja Springa okazała się krokiem milowym. Obecnie projektanci mogą tworzyć mikrousługi, korzystać z funkcji programowania reaktywnego i doskonalić budowanie aplikacji zgodnie z modelem MVC. Dzięki pełnej integracji Springa ze Spring Boot nawet najbardziej złożone projekty wymagają minimalnej ilości kodu konfiguracyjnego. W efekcie tworzone aplikacje internetowe są w większym stopniu skalowalne i efektywniejsze w wykorzystywaniu wątków.'),
+(3,'O istocie ludzkiej',3,'2','filozofia','grecki','1932',false, 'OPIS'),
+(4,'Chemia smierci',3,'4','kriminal','angielski','1972',true, 'OPIS'),
+(5,'Hambet',4,'2','sztuka teatralna','litewski','1927',false, 'OPIS'),
+(6,'Wojna swiatow',5,'5','dreszczowiec','turecki','2010',false, 'OPIS');
+
+CREATE TABLE wypozyczone(
+  id_ksiazki INTEGER PRIMARY KEY,
+  id_klienta INTEGER,
+  data_wypozyczenia DATE,
+  data_zwrotu DATE,
+CONSTRAINT wypozyczone_fk_a FOREIGN KEY(id_ksiazki) REFERENCES ksiazka(id_ksiazki),
+CONSTRAINT wypozyczone_fk_b FOREIGN KEY(id_klienta) REFERENCES klient(id_klienta)
+);
+
+INSERT INTO wypozyczone(id_ksiazki,id_klienta,data_wypozyczenia,data_zwrotu)VALUES
+(3,4,'2020-05-04','2020-07-04'),
+(5,1,'2020-04-04','2020-06-04'),
+(6,3,'2020-05-07','2020-07-07');

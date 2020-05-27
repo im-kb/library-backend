@@ -3,11 +3,15 @@ package com.demo.springboot.rest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.apache.commons.io.IOUtils;
+
 import org.springframework.web.bind.annotation.*;
 import com.demo.springboot.domain.dto.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import static com.demo.springboot.service.impl.DBManager.readKsiazki;
@@ -60,5 +64,17 @@ public class KsiegarniaApiController {
     public void refreshBooks() {
         LOGGER.info("Odswiezam ksiazki bo dostalem GET");
         ksiazki = new ArrayList<Ksiazka>(readKsiazki());
+    }
+
+    @GetMapping(
+            value = "/image/{id}",
+            produces = MediaType.IMAGE_JPEG_VALUE
+
+    )
+    public @ResponseBody
+    byte[] getImageWithMediaType(@PathVariable Integer id) throws IOException {
+        InputStream in = getClass()
+                .getResourceAsStream("/imgs/" + id + ".jpg");
+        return IOUtils.toByteArray(in);
     }
 }
