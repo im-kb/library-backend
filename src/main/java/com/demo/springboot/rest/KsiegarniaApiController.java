@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import static com.demo.springboot.service.impl.DBManager.readKsiazki;
+import static com.demo.springboot.service.impl.DBManager.isLoginAndPasswordRight;
 
 @RestController
 @RequestMapping("/ksiegarnia")
@@ -60,7 +61,7 @@ public class KsiegarniaApiController {
         }
     }
 
-    // @Scheduled(fixedRate = 5000)/////////////////////////////////////////TODO:::
+    // @Scheduled(fixedRate = 5000)/////////////////////////////////////////TODO::: TERAZ ODSWIEZAJA SIE TYLKO PO  GET
     public void refreshBooks() {
         LOGGER.info("Odswiezam ksiazki bo dostalem GET");
         ksiazki = new ArrayList<Ksiazka>(readKsiazki());
@@ -76,5 +77,18 @@ public class KsiegarniaApiController {
         InputStream in = getClass()
                 .getResourceAsStream("/imgs/" + id + ".jpg");
         return IOUtils.toByteArray(in);
+    }
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<LoginData> test5(@RequestBody LoginData loginValues) {
+        if (isLoginAndPasswordRight(loginValues.getLogin().toString(),loginValues.getPassword().toString()) == true) {
+            LOGGER.info(loginValues.toString());
+            LOGGER.info("Login i haslo sie zgadzaja.");
+            return new ResponseEntity<LoginData>(loginValues, HttpStatus.OK);
+        } else {
+            LOGGER.info("Login i haslo sie nie zgadza.");
+           // return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //TODO:: to jest prymitywnie, pasuje zmienic
+            return null;
+        }
     }
 }

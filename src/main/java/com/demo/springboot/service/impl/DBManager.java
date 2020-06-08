@@ -1,6 +1,7 @@
 package com.demo.springboot.service.impl;
 
 import com.demo.springboot.domain.dto.Ksiazka;
+import com.demo.springboot.domain.dto.LoginData;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.logging.Logger;
 
 public class DBManager {
     private static ArrayList<Ksiazka> ksiazkaList;
+    private static ArrayList<LoginData> loginList;
     private static String url = "jdbc:postgresql://rogue.db.elephantsql.com:5432/cargbzfv";
     private static String user = "cargbzfv";
     private static String password = "wjhaujNlFknUAm2GQ3jz6HOh9UNLYRB8";
@@ -47,9 +49,40 @@ public class DBManager {
         return ksiazkaList;
     }
 
+    public static Boolean isLoginAndPasswordRight(String userLogin, String userPassword) {
+        String queryGetBooksForClient = "SELECT login, haslo from klient where login ='" + userLogin + "' and haslo = '" + userPassword + "'";
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pst = con.prepareStatement(queryGetBooksForClient);
+             ResultSet rs = pst.executeQuery()) {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            String columnValue = "";
+            while (rs.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    columnValue = columnValue + rs.getString(i);
+                    columnValue = columnValue + ";;";
+                }
+                QUERY_RESULT_ROW = columnValue;
+                if (QUERY_RESULT_ROW != null) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(DBManager.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
+        System.out.println("LOGIN TO::::::::::::::::::::::::::::::::::::::::");
+        System.out.println(isLoginAndPasswordRight("kamilabudzik", "gabigabi")); // zworci true bo jest taki login i haslo
     }
 }
+
+
 /* KOPIA DO WYSWIETLANIA
     public static void main(String[] args) {
         //////////////////////////ZAPYTANIE O KSIAZKA

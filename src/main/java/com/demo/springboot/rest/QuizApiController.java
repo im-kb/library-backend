@@ -49,7 +49,6 @@ public class QuizApiController {
         }
     }
 
-
     @PutMapping(value = "/quiz/calculate")
     public ResponseEntity<AnswerDto> test2(@RequestBody AnswerDto answerDto) {
         int plus = QuizCode.checkAnswer(answerDto.getSelectedAnswers(), quiz.get(answerDto.getQuestionId()).getCorrectAnswers(), Integer.parseInt(quiz.get(answerDto.getQuestionId()).getPoints()));
