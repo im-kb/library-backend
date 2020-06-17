@@ -75,7 +75,17 @@ public class DBManager {
         }
         return false;
     }
-
+    public static void registerData(String imie,String nazwisko,String login,String haslo,String kod_pocztowy,String telefon,String miejscowosc,String ulica,String nr_domu){
+        String queryInsert = "INSERT INTO klient (nazwisko,imie,kod_pocztowy,miejscowosc,ulica,nr_domu,telefon,login,haslo)SELECT '"+nazwisko+"','"+imie+"','"+kod_pocztowy+"','"+miejscowosc+"','"+ulica+"','"+nr_domu+"','"+telefon+"','"+login+"','"+haslo+"' WHERE NOT EXISTS (SELECT login FROM klient WHERE login='"+login+"');";
+        try {
+            Connection con = DriverManager.getConnection(url, user, password);
+            Statement stmt=con.createStatement();
+            stmt.executeUpdate(queryInsert);
+            System.out.println("zarejesestrowano");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public static void main(String[] args) {
         System.out.println("LOGIN TO::::::::::::::::::::::::::::::::::::::::");
         System.out.println(isLoginAndPasswordRight("kamilabudzik", "gabigabi")); // zworci true bo jest taki login i haslo

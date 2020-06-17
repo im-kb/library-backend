@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import static com.demo.springboot.service.impl.DBManager.readKsiazki;
+import static com.demo.springboot.service.impl.DBManager.registerData;
 import static com.demo.springboot.service.impl.DBManager.isLoginAndPasswordRight;
 
 @RestController
@@ -91,4 +92,12 @@ public class KsiegarniaApiController {
             return null;
         }
     }
+    @PostMapping(value = "/register")
+    public ResponseEntity<KlientData> test6(@RequestBody KlientData registerValues) {
+            registerData(registerValues.getImie().toString(),registerValues.getNazwisko().toString(),registerValues.getLogin().toString(),registerValues.getHaslo().toString(),registerValues.getKodPocztowy().toString(),registerValues.getTelefon().toString(),registerValues.getMiejscowosc().toString(),registerValues.getUlica().toString(),registerValues.getNrDomu().toString());
+            LOGGER.info(registerValues.toString());
+            LOGGER.info("zarejestrowano.");
+            return new ResponseEntity<KlientData>(registerValues, HttpStatus.OK);
+        }
+
 }
