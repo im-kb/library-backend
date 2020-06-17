@@ -1,5 +1,5 @@
 CREATE TABLE wydawnictwo (
-	  id_wydawnictwa INTEGER PRIMARY KEY,
+	  id_wydawnictwa integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
 	  nazwa CHARACTER VARYING(40),
 	  miasto CHARACTER VARYING(20)
 );
@@ -12,7 +12,7 @@ INSERT INTO wydawnictwo(id_wydawnictwa, nazwa, miasto) VALUES
 	(5,'Swiat Ksiazki','Lublin');
 
 CREATE TABLE klient (
-  id_klienta INTEGER PRIMARY KEY,
+      id_klienta integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
   nazwisko CHARACTER VARYING(60),
   imie CHARACTER VARYING(40),
   kod_pocztowy CHARACTER VARYING(6),
@@ -35,7 +35,7 @@ INSERT INTO klient(id_klienta, nazwisko,imie,kod_pocztowy,miejscowosc,ulica,nr_d
 
 
 CREATE TABLE autor (
-  id_autora INTEGER PRIMARY KEY,
+  id_autora integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
   nazwisko CHARACTER VARYING(50),
   imie CHARACTER VARYING(30),
   narodowosc CHARACTER VARYING(30),
@@ -52,7 +52,7 @@ insert INTO autor(id_autora,imie,nazwisko,narodowosc,okres_tworzenia,jezyk) VALU
 
 
 CREATE TABLE ksiazka (
-  id_ksiazki INTEGER PRIMARY KEY,
+  id_ksiazki integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
   tytul CHARACTER VARYING(100),
   id_autora INTEGER,
   id_wydawnictwa INTEGER,
@@ -74,7 +74,7 @@ INSERT INTO ksiazka(id_ksiazki, tytul,id_autora,id_wydawnictwa,temat,jezyk_ksiaz
 (6,'Wojna swiatow',5,'5','dreszczowiec','turecki','2010',false, 'OPIS');
 
 CREATE TABLE wypozyczone(
-  id_ksiazki INTEGER PRIMARY KEY,
+  id_ksiazki integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
   id_klienta INTEGER,
   data_wypozyczenia DATE,
   data_zwrotu DATE,
@@ -86,3 +86,16 @@ INSERT INTO wypozyczone(id_ksiazki,id_klienta,data_wypozyczenia,data_zwrotu)VALU
 (3,4,'2020-05-04','2020-07-04'),
 (5,1,'2020-04-04','2020-06-04'),
 (6,3,'2020-05-07','2020-07-07');
+
+
+
+CREATE TABLE administrator
+(
+    id_administratora integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    login character varying(20),
+    haslo character varying(10),
+    CONSTRAINT admin_pkey PRIMARY KEY (id_administratora)
+)
+
+INSERT INTO administrator(login,haslo)VALUES
+('admin','admin')
