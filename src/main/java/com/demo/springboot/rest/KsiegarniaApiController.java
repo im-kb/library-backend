@@ -14,9 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import static com.demo.springboot.service.impl.DBManager.readKsiazki;
-import static com.demo.springboot.service.impl.DBManager.registerData;
-import static com.demo.springboot.service.impl.DBManager.isLoginAndPasswordRight;
+import static com.demo.springboot.service.impl.DBManager.*;
 
 @RestController
 @RequestMapping("/ksiegarnia")
@@ -82,7 +80,7 @@ public class KsiegarniaApiController {
 
     @PostMapping(value = "/login")
     public ResponseEntity<LoginData> test5(@RequestBody LoginData loginValues) {
-        if (isLoginAndPasswordRight(loginValues.getLogin().toString(),loginValues.getPassword().toString()) == true) {
+        if (isLoginAndPasswordRightClient(loginValues.getLogin().toString(),loginValues.getPassword().toString()) == true) {
             LOGGER.info(loginValues.toString());
             LOGGER.info("Login i haslo sie zgadzaja.");
             return new ResponseEntity<LoginData>(loginValues, HttpStatus.OK);
@@ -92,6 +90,20 @@ public class KsiegarniaApiController {
             return null;
         }
     }
+
+    @PostMapping(value = "/loginAdmin")
+    public ResponseEntity<LoginData> test6(@RequestBody LoginData loginValues) {
+        if (isLoginAndPasswordRightAdmin(loginValues.getLogin().toString(),loginValues.getPassword().toString()) == true) {
+            LOGGER.info(loginValues.toString());
+            LOGGER.info("Login i haslo sie zgadzaja.");
+            return new ResponseEntity<LoginData>(loginValues, HttpStatus.OK);
+        } else {
+            LOGGER.info("Login i haslo sie nie zgadza.");
+            // return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //TODO:: to jest prymitywnie, pasuje zmienic
+            return null;
+        }
+    }
+
     @PostMapping(value = "/register")
     public ResponseEntity test6(@RequestBody KlientData registerValues) {
             if(registerData(registerValues.getImie().toString(),registerValues.getNazwisko().toString(),registerValues.getLogin().toString(),registerValues.getHaslo().toString(),registerValues.getKodPocztowy().toString(),registerValues.getTelefon().toString(),registerValues.getMiejscowosc().toString(),registerValues.getUlica().toString(),registerValues.getNrDomu().toString())!=0)

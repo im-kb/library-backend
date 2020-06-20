@@ -48,8 +48,35 @@ public class DBManager {
         return ksiazkaList;
     }
 
-    public static Boolean isLoginAndPasswordRight(String userLogin, String userPassword) {
+    public static Boolean isLoginAndPasswordRightClient(String userLogin, String userPassword) {
         String queryGetBooksForClient = "SELECT login, haslo from klient where login ='" + userLogin + "' and haslo = '" + userPassword + "'";
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pst = con.prepareStatement(queryGetBooksForClient);
+             ResultSet rs = pst.executeQuery()) {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            String columnValue = "";
+            while (rs.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    columnValue = columnValue + rs.getString(i);
+                    columnValue = columnValue + ";;";
+                }
+                QUERY_RESULT_ROW = columnValue;
+                if (QUERY_RESULT_ROW != null) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(DBManager.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return false;
+    }
+
+    public static Boolean isLoginAndPasswordRightAdmin(String userLogin, String userPassword) {
+        String queryGetBooksForClient = "SELECT login, haslo from administrator where login ='" + userLogin + "' and haslo = '" + userPassword + "'";
         try (Connection con = DriverManager.getConnection(url, user, password);
              PreparedStatement pst = con.prepareStatement(queryGetBooksForClient);
              ResultSet rs = pst.executeQuery()) {
