@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 
 public class DBManager {
     private static ArrayList<Ksiazka> ksiazkaList;
-    private static ArrayList<LoginData> loginList;
     private static String url = "jdbc:postgresql://rogue.db.elephantsql.com:5432/cargbzfv";
     private static String user = "cargbzfv";
     private static String password = "wjhaujNlFknUAm2GQ3jz6HOh9UNLYRB8";
@@ -75,11 +74,12 @@ public class DBManager {
         }
         return false;
     }
-    public static int registerData(String imie,String nazwisko,String login,String haslo,String kod_pocztowy,String telefon,String miejscowosc,String ulica,String nr_domu){
-        String queryInsert = "INSERT INTO klient (nazwisko,imie,kod_pocztowy,miejscowosc,ulica,nr_domu,telefon,login,haslo)SELECT '"+nazwisko+"','"+imie+"','"+kod_pocztowy+"','"+miejscowosc+"','"+ulica+"','"+nr_domu+"','"+telefon+"','"+login+"','"+haslo+"' WHERE NOT EXISTS (SELECT login FROM klient WHERE login='"+login+"');";
+
+    public static int registerData(String imie, String nazwisko, String login, String haslo, String kod_pocztowy, String telefon, String miejscowosc, String ulica, String nr_domu) {
+        String queryInsert = "INSERT INTO klient (nazwisko,imie,kod_pocztowy,miejscowosc,ulica,nr_domu,telefon,login,haslo)SELECT '" + nazwisko + "','" + imie + "','" + kod_pocztowy + "','" + miejscowosc + "','" + ulica + "','" + nr_domu + "','" + telefon + "','" + login + "','" + haslo + "' WHERE NOT EXISTS (SELECT login FROM klient WHERE login='" + login + "');";
         try {
             Connection con = DriverManager.getConnection(url, user, password);
-            Statement stmt=con.createStatement();
+            Statement stmt = con.createStatement();
             int i = stmt.executeUpdate(queryInsert);
             System.out.println(i);
             return i;
@@ -88,9 +88,8 @@ public class DBManager {
         }
         return 0;
     }
+
     public static void main(String[] args) {
-        System.out.println("LOGIN TO::::::::::::::::::::::::::::::::::::::::");
-        System.out.println(isLoginAndPasswordRight("kamilabudzik", "gabigabi")); // zworci true bo jest taki login i haslo
     }
 }
 

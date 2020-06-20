@@ -74,7 +74,7 @@ INSERT INTO ksiazka(id_ksiazki, tytul,id_autora,id_wydawnictwa,temat,jezyk_ksiaz
 (6,'Wojna swiatow',5,'5','dreszczowiec','turecki','2010',false, 'OPIS');
 
 CREATE TABLE wypozyczone(
-  id_ksiazki integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+  id_ksiazki integer,
   id_klienta INTEGER,
   data_wypozyczenia DATE,
   data_zwrotu DATE,

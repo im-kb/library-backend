@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 public class LoginData {
     private String login;
     private String password;
-    private boolean isAdmin;
 
     public LoginData() { }
 
@@ -17,7 +16,6 @@ public class LoginData {
         return "{\"LoginData\":{"
                 + "\"Login\":\"" + login + ""
                 + ", \"password\":\"" + password + "\""
-                + ", \"isAdmin:\":\"" + isAdmin + "\""
                 + "}}";
     }
 }
