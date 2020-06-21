@@ -99,8 +99,8 @@ public class KsiegarniaApiController {
             return new ResponseEntity<LoginData>(loginValues, HttpStatus.OK);
         } else {
             LOGGER.info("Login i haslo sie nie zgadza.");
-            // return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //TODO:: to jest prymitywnie, pasuje zmienic
-            return null;
+            // return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return null;// TODO:: PRYMITYWNE _ DO ZMIANY
         }
     }
 
@@ -116,4 +116,18 @@ public class KsiegarniaApiController {
                 LOGGER.info("istnieje taki login ERROR.");
                  return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+
+   /* @GetMapping(value = "/klient/{login}/{password}")//TODO::::::::::::::::::::::::::
+    public @ResponseBody
+    ResponseEntity<KlientData> returnKlient (@RequestParam string login, @RequestParam String password {
+        refreshBooks();
+        try {
+             return new ResponseEntity<Ksiazka>(KlientData, HttpStatus.OK);
+        } catch (
+                Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }*/
+
+
 }
