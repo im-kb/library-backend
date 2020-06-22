@@ -13,15 +13,18 @@ import com.demo.springboot.domain.dto.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.demo.springboot.service.impl.DBManager.*;
+
 
 @RestController
 @RequestMapping("/ksiegarnia")
 
 public class KsiegarniaApiController {
 
-    ArrayList<Ksiazka> ksiazki = new ArrayList<Ksiazka>(readKsiazki());
+    ArrayList<Ksiazka> ksiazki = new ArrayList<Ksiazka>(getBooks());
+
     private static final Logger LOGGER = LoggerFactory.getLogger(KsiegarniaApiController.class);
 
     @GetMapping(value = "/ksiazka/{id}")
@@ -63,7 +66,7 @@ public class KsiegarniaApiController {
     // @Scheduled(fixedRate = 5000)/////////////////////////////////////////TODO::: TERAZ ODSWIEZAJA SIE TYLKO PO  GET
     public void refreshBooks() {
         LOGGER.info("Odswiezam ksiazki bo dostalem GET");
-        ksiazki = new ArrayList<Ksiazka>(readKsiazki());
+        ksiazki = new ArrayList<Ksiazka>(getBooks());
     }
 
     @GetMapping(
@@ -80,54 +83,56 @@ public class KsiegarniaApiController {
 
     @PostMapping(value = "/login")
     public ResponseEntity<LoginData> test5(@RequestBody LoginData loginValues) {
-        if (isLoginAndPasswordRightClient(loginValues.getLogin().toString(),loginValues.getPassword().toString()) == true) {
+        if (isLoginAndPasswordRightClient(loginValues.getLogin().toString(), loginValues.getPassword().toString()) == true) {
             LOGGER.info(loginValues.toString());
             LOGGER.info("Login i haslo sie zgadzaja.");
             return new ResponseEntity<LoginData>(loginValues, HttpStatus.OK);
         } else {
             LOGGER.info("Login i haslo sie nie zgadza.");
-           // return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //TODO:: to jest prymitywnie, pasuje zmienic
+            // return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //TODO:: to jest prymitywnie, pasuje zmienic
             return null;
         }
     }
 
     @PostMapping(value = "/loginAdmin")
     public ResponseEntity<LoginData> test6(@RequestBody LoginData loginValues) {
-        if (isLoginAndPasswordRightAdmin(loginValues.getLogin().toString(),loginValues.getPassword().toString()) == true) {
+        if (isLoginAndPasswordRightAdmin(loginValues.getLogin().toString(), loginValues.getPassword().toString()) == true) {
             LOGGER.info(loginValues.toString());
             LOGGER.info("Login i haslo sie zgadzaja.");
             return new ResponseEntity<LoginData>(loginValues, HttpStatus.OK);
         } else {
             LOGGER.info("Login i haslo sie nie zgadza.");
-            // return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            //  return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             return null;// TODO:: PRYMITYWNE _ DO ZMIANY
         }
     }
 
     @PostMapping(value = "/register")
     public ResponseEntity test6(@RequestBody KlientData registerValues) {
-            if(registerData(registerValues.getImie().toString(),registerValues.getNazwisko().toString(),registerValues.getLogin().toString(),registerValues.getHaslo().toString(),registerValues.getKodPocztowy().toString(),registerValues.getTelefon().toString(),registerValues.getMiejscowosc().toString(),registerValues.getUlica().toString(),registerValues.getNrDomu().toString())!=0)
-            {
-                LOGGER.info(registerValues.toString());
-                LOGGER.info("zarejestrowano.");
-                return new ResponseEntity<KlientData>(registerValues, HttpStatus.OK);
-            }
-            else
-                LOGGER.info("istnieje taki login ERROR.");
-                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
+        if (registerData(registerValues.getImie().toString(), registerValues.getNazwisko().toString(), registerValues.getLogin().toString(), registerValues.getHaslo().toString(), registerValues.getKodPocztowy().toString(), registerValues.getTelefon().toString(), registerValues.getMiejscowosc().toString(), registerValues.getUlica().toString(), registerValues.getNrDomu().toString()) != 0) {
+            LOGGER.info(registerValues.toString());
+            LOGGER.info("zarejestrowano.");
+            return new ResponseEntity<KlientData>(registerValues, HttpStatus.OK);
+        } else
+            LOGGER.info("istnieje taki login ERROR.");
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
 
-   /* @GetMapping(value = "/klient/{login}/{password}")//TODO::::::::::::::::::::::::::
+    //http://127.0.0.1:8080/ksiegarnia/klient?login=kamilabudzik&password=gabigabi
+    @GetMapping(value = "/klient")
     public @ResponseBody
-    ResponseEntity<KlientData> returnKlient (@RequestParam string login, @RequestParam String password {
-        refreshBooks();
-        try {
-             return new ResponseEntity<Ksiazka>(KlientData, HttpStatus.OK);
-        } catch (
-                Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }*/
+    ResponseEntity<ArrayList<KlientData>> returnKlient(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
 
+        if (login != null && password != null && getKlient(login, password) != null) {
+            ArrayList<KlientData> daneKlienta = new ArrayList<KlientData>(getKlient(login, password));
+            LOGGER.info(login);
+            LOGGER.info(password);
+            LOGGER.info(Arrays.toString(daneKlienta.toArray()));
+            LOGGER.info("KONIEC ARRAYA MOJEGO");
 
+            return new ResponseEntity<ArrayList<KlientData>>(daneKlienta, HttpStatus.OK);
+        } else
+            LOGGER.info("null");
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
 }
