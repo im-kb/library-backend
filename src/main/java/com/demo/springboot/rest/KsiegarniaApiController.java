@@ -89,8 +89,7 @@ public class KsiegarniaApiController {
             return new ResponseEntity<LoginData>(loginValues, HttpStatus.OK);
         } else {
             LOGGER.info("Login i haslo sie nie zgadza.");
-            // return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //TODO:: to jest prymitywnie, pasuje zmienic
-            return null;
+             return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //TODO:: to jest prymitywnie, pasuje zmienic
         }
     }
 
@@ -115,6 +114,16 @@ public class KsiegarniaApiController {
             return new ResponseEntity<KlientData>(registerValues, HttpStatus.OK);
         } else
             LOGGER.info("istnieje taki login ERROR.");
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+    @PutMapping(value = "/update")
+    public ResponseEntity test7(@RequestBody KlientData updatedValues) {
+        if (updateData(updatedValues.getImie().toString(), updatedValues.getNazwisko().toString(), updatedValues.getLogin().toString(), updatedValues.getHaslo().toString(), updatedValues.getKodPocztowy().toString(), updatedValues.getTelefon().toString(), updatedValues.getMiejscowosc().toString(), updatedValues.getUlica().toString(), updatedValues.getNrDomu().toString()) != 0) {
+            LOGGER.info(updatedValues.toString());
+            LOGGER.info("Zaktualizowano.");
+            return new ResponseEntity<KlientData>(updatedValues, HttpStatus.OK);
+        } else
+            LOGGER.info("Brak zmian");
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 

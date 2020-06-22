@@ -150,6 +150,20 @@ public class DBManager {
         }
         return 0;
     }
+
+    public static int updateData(String imie, String nazwisko, String login, String haslo, String kod_pocztowy, String telefon, String miejscowosc, String ulica, String nr_domu) {
+        String queryUpdate="UPDATE klient SET nazwisko='"+nazwisko+"',imie='"+imie+"',kod_pocztowy='"+kod_pocztowy+"',miejscowosc='"+miejscowosc+"',ulica='"+ulica+"',nr_domu='"+nr_domu+"',telefon='"+telefon+"',login='"+login+"',haslo='"+haslo+"' WHERE login='"+login+"' AND haslo='"+haslo+"'";
+        try {
+            Connection con = DriverManager.getConnection(url, user, password);
+            Statement stmt = con.createStatement();
+            int i = stmt.executeUpdate(queryUpdate);
+            System.out.println(i);
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
    /*  public static void main(String[] args) {
        klientList = new ArrayList<>();
