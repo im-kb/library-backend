@@ -89,7 +89,7 @@ public class KsiegarniaApiController {
             return new ResponseEntity<LoginData>(loginValues, HttpStatus.OK);
         } else {
             LOGGER.info("Login i haslo sie nie zgadza.");
-             return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //TODO:: to jest prymitywnie, pasuje zmienic
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -116,6 +116,7 @@ public class KsiegarniaApiController {
             LOGGER.info("istnieje taki login ERROR.");
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
+
     @PutMapping(value = "/update")
     public ResponseEntity test7(@RequestBody KlientData updatedValues) {
         if (updateData(updatedValues.getImie().toString(), updatedValues.getNazwisko().toString(), updatedValues.getLogin().toString(), updatedValues.getHaslo().toString(), updatedValues.getKodPocztowy().toString(), updatedValues.getTelefon().toString(), updatedValues.getMiejscowosc().toString(), updatedValues.getUlica().toString(), updatedValues.getNrDomu().toString()) != 0) {
@@ -140,6 +141,24 @@ public class KsiegarniaApiController {
             LOGGER.info("KONIEC ARRAYA MOJEGO");
 
             return new ResponseEntity<ArrayList<KlientData>>(daneKlienta, HttpStatus.OK);
+        } else
+            LOGGER.info("null");
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+
+    //http://127.0.0.1:8080/ksiegarnia/klient/usunkonto?login=zxcasdz&password=zxcasd
+    @DeleteMapping(value = "/klient/usunkonto")
+    public @ResponseBody
+    ResponseEntity<LoginData> deleteklient(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
+
+        if (login != null && password != null && deleteClient(login, password) == 1) {
+            LOGGER.info(login);
+            LOGGER.info(password);
+            LoginData loginData = new LoginData(login, password);
+            deleteClient(login, password);
+
+            return new ResponseEntity<LoginData>(loginData, HttpStatus.OK);
         } else
             LOGGER.info("null");
         return new ResponseEntity(HttpStatus.BAD_REQUEST);

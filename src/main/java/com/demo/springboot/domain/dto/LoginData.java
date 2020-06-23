@@ -1,13 +1,17 @@
 package com.demo.springboot.domain.dto;
 
-import lombok.AllArgsConstructor;
+//import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+//@AllArgsConstructor
 public class LoginData {
     private String login;
     private String password;
 
     public LoginData() { }
+    public LoginData(String login, String password) {
+        this.login=login;
+        this.password=password;
+    }
 
     public String getLogin() {return login;}
     public String getPassword() { return password;}

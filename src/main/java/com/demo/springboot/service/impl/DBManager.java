@@ -135,6 +135,20 @@ public class DBManager {
         return false;
     }
 
+    public static int deleteClient(String userLogin, String userPassword) {
+        String queryClientToRemove = "delete from klient where login ='" + userLogin + "' and haslo = '" + userPassword + "'";
+        try {
+            Connection con = DriverManager.getConnection(url, user, password);
+            Statement stmt = con.createStatement();
+            int i = stmt.executeUpdate(queryClientToRemove);
+            System.out.println(i);
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static int registerData(String imie, String nazwisko, String login, String haslo, String kod_pocztowy, String telefon, String miejscowosc, String ulica, String nr_domu) {
         String queryInsert = "INSERT INTO klient (nazwisko,imie,kod_pocztowy,miejscowosc,ulica,nr_domu,telefon,login,haslo)" +
                 "SELECT '" + nazwisko + "','" + imie + "','" + kod_pocztowy + "','" + miejscowosc + "','" + ulica + "','" + nr_domu + "','" + telefon + "','" + login + "','" + haslo +
