@@ -27,6 +27,7 @@ public class KsiegarniaApiController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KsiegarniaApiController.class);
 
+    //http://127.0.0.1:8080/ksiegarnia/ksiazka/2
     @GetMapping(value = "/ksiazka/{id}")
     public @ResponseBody
     ResponseEntity<Ksiazka> returnKsiazka(@PathVariable Integer id) {
@@ -50,6 +51,7 @@ public class KsiegarniaApiController {
         }
     }
 
+    //http://127.0.0.1:8080/ksiegarnia/ksiazki
     @GetMapping(value = "/ksiazki")
     public @ResponseBody
     ResponseEntity<ArrayList<Ksiazka>> returnKsiazki() {
@@ -69,6 +71,8 @@ public class KsiegarniaApiController {
         ksiazki = new ArrayList<Ksiazka>(getBooks());
     }
 
+
+    //http://127.0.0.1:8080/ksiegarnia/image/2
     @GetMapping(
             value = "/image/{id}",
             produces = MediaType.IMAGE_JPEG_VALUE
@@ -98,6 +102,7 @@ public class KsiegarniaApiController {
         }
     }
 
+    //http://127.0.0.1:8080/ksiegarnia/loginAdmin
     @PostMapping(value = "/loginAdmin")
     public ResponseEntity<LoginData> test6(@RequestBody LoginData loginValues) {
         if (isLoginAndPasswordRightAdmin(loginValues.getLogin(), loginValues.getPassword()) == true) {
@@ -162,6 +167,23 @@ public class KsiegarniaApiController {
             LOGGER.info("Pomyślnie skasowano konto");
 
             return new ResponseEntity<LoginData>(loginData, HttpStatus.OK);
+        } else
+            LOGGER.info("Blad przy kasowaniu konta");
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    //http://127.0.0.1:8080/ksiegarnia/klient/usunkonto?login=zxcasdz&password=zxcasd
+    @PostMapping(value = "/ksiazki/wypozycz")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity wypozyczKsiazke(@RequestParam(value = "login", required = true) String login,
+                                          @RequestParam(value = "password", required = true) String password,
+                                          @RequestParam(value = "idKsiazki", required = true) Integer idKsiazki) {
+        if (login != null && password != null && idKsiazki != null) {
+            LOGGER.info("LOGIN:" + login);
+            LOGGER.info("haslo:" + password);
+            LOGGER.info("idksiazki:" + idKsiazki);
+
+            return new ResponseEntity(HttpStatus.OK);
         } else
             LOGGER.info("Blad przy kasowaniu konta");
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
