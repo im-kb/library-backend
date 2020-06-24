@@ -65,6 +65,20 @@ public class KsiegarniaApiController {
         }
     }
 
+    @GetMapping(value = "/klient/wypozyczeniaKlienta")
+    public @ResponseBody
+    ResponseEntity<ArrayList<WypozyczeniaKlienta>> returnWypozyczeniaKlienta(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
+        // refreshBooks();
+        try {
+
+            ArrayList<WypozyczeniaKlienta> wypozyczeniaKlienta = new ArrayList<WypozyczeniaKlienta>(getWypozyczeniaKlienta(login,password));
+            return new ResponseEntity<ArrayList<WypozyczeniaKlienta>>(wypozyczeniaKlienta, HttpStatus.OK);
+        } catch (
+                Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     // @Scheduled(fixedRate = 5000)/////////////////////////////////////////TODO::: TERAZ ODSWIEZAJA SIE TYLKO PO  GET
     public void refreshBooks() {
         LOGGER.info("Odswiezam ksiazki bo dostalem GET");
@@ -92,7 +106,7 @@ public class KsiegarniaApiController {
     }*/
     @PostMapping(value = "/login")
     public ResponseEntity<LoginData> test5(@RequestBody LoginData loginValues) {
-        if (isLoginAndPasswordRightClient(loginValues.getLogin().toString(), loginValues.getPassword().toString()) == true) {
+        if (isLoginAndPasswordRightClient(loginValues.getLogin(), loginValues.getPassword())) {
             LOGGER.info(loginValues.toString());
             LOGGER.info("Login i haslo sie zgadzaja.");
             return new ResponseEntity<LoginData>(loginValues, HttpStatus.OK);
@@ -105,7 +119,7 @@ public class KsiegarniaApiController {
     //http://127.0.0.1:8080/ksiegarnia/loginAdmin
     @PostMapping(value = "/loginAdmin")
     public ResponseEntity<LoginData> test6(@RequestBody LoginData loginValues) {
-        if (isLoginAndPasswordRightAdmin(loginValues.getLogin(), loginValues.getPassword()) == true) {
+        if (isLoginAndPasswordRightAdmin(loginValues.getLogin(), loginValues.getPassword())) {
             LOGGER.info(loginValues.toString());
             LOGGER.info("Login i haslo sie zgadzaja.");
             return new ResponseEntity<LoginData>(loginValues, HttpStatus.OK);
@@ -147,7 +161,6 @@ public class KsiegarniaApiController {
             LOGGER.info(login);
             LOGGER.info(password);
             LOGGER.info(Arrays.toString(daneKlienta.toArray()));
-            LOGGER.info("KONIEC ARRAYA MOJEGO");
 
             return new ResponseEntity<ArrayList<KlientData>>(daneKlienta, HttpStatus.OK);
         } else
@@ -172,20 +185,24 @@ public class KsiegarniaApiController {
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
-    //http://127.0.0.1:8080/ksiegarnia/klient/usunkonto?login=zxcasdz&password=zxcasd
+    //http://127.0.0.1:8080/ksiegarnia/ksiazki/wypozycz?login=zxcasd&password=zxcasdd&idKsiazki=1
     @PostMapping(value = "/ksiazki/wypozycz")
-    @ResponseStatus(value = HttpStatus.OK)
-    public ResponseEntity wypozyczKsiazke(@RequestParam(value = "login", required = true) String login,
-                                          @RequestParam(value = "password", required = true) String password,
-                                          @RequestParam(value = "idKsiazki", required = true) Integer idKsiazki) {
-        if (login != null && password != null && idKsiazki != null) {
+    public @ResponseBody
+    ResponseEntity<LoginData> wypozyczKsiazkeAPI(@RequestParam(value = "login", required = true) String login,
+                                                 @RequestParam(value = "password", required = true) String password,
+                                                 @RequestParam(value = "idKsiazki", required = true) Integer idKsiazki) {
+        if (login != null && password != null && idKsiazki != null
+                && !jestJuzWypozyczona(login, password, idKsiazki)
+                && isLoginAndPasswordRightClient(login, password)) {
+
             LOGGER.info("LOGIN:" + login);
             LOGGER.info("haslo:" + password);
             LOGGER.info("idksiazki:" + idKsiazki);
-
-            return new ResponseEntity(HttpStatus.OK);
+            wypozyczKsiazke(login, password, idKsiazki);
+            LoginData loginData = new LoginData(login, password);
+            return new ResponseEntity<LoginData>(loginData, HttpStatus.OK);
         } else
-            LOGGER.info("Blad przy kasowaniu konta");
+            LOGGER.info("Blad przy wypozyczeniu");
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }

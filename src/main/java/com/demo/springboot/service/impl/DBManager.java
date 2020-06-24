@@ -2,6 +2,7 @@ package com.demo.springboot.service.impl;
 
 import com.demo.springboot.domain.dto.KlientData;
 import com.demo.springboot.domain.dto.Ksiazka;
+import com.demo.springboot.domain.dto.WypozyczeniaKlienta;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,6 +18,18 @@ public class DBManager {
     private static String password = "wjhaujNlFknUAm2GQ3jz6HOh9UNLYRB8";
     private static String QUERY_RESULT_ROW = "";
     private static final String SPLIT_CHAR = ";;";
+    private static Connection con;
+
+    static {
+        try {
+            con = DriverManager.getConnection(url, user, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public DBManager() throws SQLException {
+    }
 
     public static ArrayList<Ksiazka> getBooks() { //wczytywywanie ksiazek
         ksiazkaList = new ArrayList<>();
@@ -25,9 +38,9 @@ public class DBManager {
                 "w.nazwa || ' ' ||w.miasto as WYDAWNICTWO,\n" +
                 "k.temat,k.jezyk_ksiazki,k.rok_wydania,k.dostepnosc,k.opis\n" +
                 "from ksiazka k natural join autor a natural join wydawnictwo w";
-        try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement(queryGetBooksForClient);
-             ResultSet rs = pst.executeQuery()) {
+        try (
+                PreparedStatement pst = con.prepareStatement(queryGetBooksForClient);
+                ResultSet rs = pst.executeQuery()) {
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnsNumber = rsmd.getColumnCount();
             String columnValue = "";
@@ -49,13 +62,42 @@ public class DBManager {
         return ksiazkaList;
     }
 
+    public static ArrayList<WypozyczeniaKlienta> getWypozyczeniaKlienta(String login, String password) {//TODO::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        ArrayList<WypozyczeniaKlienta> klientWypozyczeniaList;
+        klientWypozyczeniaList = new ArrayList<>();
+        String queryGetWypozyczeniaKlienta = "select id_ksiazki, tytul, data_wypozyczenia, data_zwrotu  from wypozyczone natural join ksiazka\n" +
+                "where id_klienta=(SELECT id_klienta from klient where login = '" + login + "'  and haslo = '" + password + "')";
+        try (
+                PreparedStatement pst = con.prepareStatement(queryGetWypozyczeniaKlienta);
+                ResultSet rs = pst.executeQuery()) {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            String columnValue = "";
+            while (rs.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    columnValue = columnValue + rs.getString(i);
+                    columnValue = columnValue + ";;";
+                }
+                QUERY_RESULT_ROW = columnValue;
+                String[] tab = QUERY_RESULT_ROW.split(SPLIT_CHAR);
+                WypozyczeniaKlienta wyp = new WypozyczeniaKlienta(tab[0], tab[1], tab[2], tab[3]);
+                klientWypozyczeniaList.add(wyp);
+                columnValue = "";
+            }
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(DBManager.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return klientWypozyczeniaList;
+    }
+
     public static ArrayList<KlientData> getKlient(String klientLogin, String klientPassword) { //wczytywywanie klienta
         klientList = new ArrayList<>();
         String queryGetBooksForClient = "select imie, nazwisko, miejscowosc, ulica, nr_domu, kod_pocztowy, telefon, login, haslo from klient where login = '" + klientLogin + "'\n" +
                 "and haslo = '" + klientPassword + "'";
-        try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement(queryGetBooksForClient);
-             ResultSet rs = pst.executeQuery()) {
+        try (
+                PreparedStatement pst = con.prepareStatement(queryGetBooksForClient);
+                ResultSet rs = pst.executeQuery()) {
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnsNumber = rsmd.getColumnCount();
             String columnValue = "";
@@ -83,9 +125,9 @@ public class DBManager {
 
     public static Boolean isLoginAndPasswordRightClient(String userLogin, String userPassword) {
         String queryGetBooksForClient = "SELECT login, haslo from klient where login ='" + userLogin + "' and haslo = '" + userPassword + "'";
-        try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement(queryGetBooksForClient);
-             ResultSet rs = pst.executeQuery()) {
+        try (
+                PreparedStatement pst = con.prepareStatement(queryGetBooksForClient);
+                ResultSet rs = pst.executeQuery()) {
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnsNumber = rsmd.getColumnCount();
             String columnValue = "";
@@ -110,9 +152,9 @@ public class DBManager {
 
     public static Boolean isLoginAndPasswordRightAdmin(String userLogin, String userPassword) {
         String queryGetBooksForClient = "SELECT login, haslo from administrator where login ='" + userLogin + "' and haslo = '" + userPassword + "'";
-        try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement(queryGetBooksForClient);
-             ResultSet rs = pst.executeQuery()) {
+        try (
+                PreparedStatement pst = con.prepareStatement(queryGetBooksForClient);
+                ResultSet rs = pst.executeQuery()) {
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnsNumber = rsmd.getColumnCount();
             String columnValue = "";
@@ -138,7 +180,6 @@ public class DBManager {
     public static int deleteClient(String userLogin, String userPassword) {
         String queryClientToRemove = "delete from klient where login ='" + userLogin + "' and haslo = '" + userPassword + "'";
         try {
-            Connection con = DriverManager.getConnection(url, user, password);
             Statement stmt = con.createStatement();
             int i = stmt.executeUpdate(queryClientToRemove);
             System.out.println(i);
@@ -149,12 +190,60 @@ public class DBManager {
         return 0;
     }
 
+    public static int wypozyczKsiazke(String userLogin, String userPassword, Integer idKsiazki) {
+        String queryWypozycz = "INSERT INTO wypozyczone(id_ksiazki,id_klienta,data_wypozyczenia,data_zwrotu)\n" +
+                "VALUES (" + idKsiazki + ",(SELECT id_klienta from klient  where login ='" + userLogin + "' and haslo = '" + userPassword + "'),current_date,current_date+30) ON CONFLICT DO NOTHING";
+        try {
+            Statement stmt = con.createStatement();
+            int i = stmt.executeUpdate(queryWypozycz);
+            System.out.println(i);
+            if (i == 1) {
+                String queryUpdate = "update ksiazka set dostepnosc=false where id_ksiazki=" + idKsiazki;
+                Statement stmt2 = con.createStatement();
+                int i2 = stmt2.executeUpdate(queryUpdate);
+                System.out.println(i2);
+            }
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static Boolean jestJuzWypozyczona(String userLogin, String userPassword, Integer idKsiazki) {
+        String queryCheck = "select id_ksiazki,id_klienta from wypozyczone where id_klienta=(SELECT id_klienta from klient" +
+                "  where login ='" + userLogin + "' and haslo = '" + userPassword + "') and id_ksiazki=" + idKsiazki;
+        try (
+                PreparedStatement pst = con.prepareStatement(queryCheck);
+                ResultSet rs = pst.executeQuery()) {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            String columnValue = "";
+            while (rs.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    columnValue = columnValue + rs.getString(i);
+                    columnValue = columnValue + ";;";
+                }
+                QUERY_RESULT_ROW = columnValue;
+                if (QUERY_RESULT_ROW != null) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(DBManager.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return false;
+    }
+
+
     public static int registerData(String imie, String nazwisko, String login, String haslo, String kod_pocztowy, String telefon, String miejscowosc, String ulica, String nr_domu) {
         String queryInsert = "INSERT INTO klient (nazwisko,imie,kod_pocztowy,miejscowosc,ulica,nr_domu,telefon,login,haslo)" +
                 "SELECT '" + nazwisko + "','" + imie + "','" + kod_pocztowy + "','" + miejscowosc + "','" + ulica + "','" + nr_domu + "','" + telefon + "','" + login + "','" + haslo +
                 "' WHERE NOT EXISTS (SELECT login FROM klient WHERE login='" + login + "');";
         try {
-            Connection con = DriverManager.getConnection(url, user, password);
             Statement stmt = con.createStatement();
             int i = stmt.executeUpdate(queryInsert);
             System.out.println(i);
@@ -168,7 +257,6 @@ public class DBManager {
     public static int updateData(String imie, String nazwisko, String login, String haslo, String kod_pocztowy, String telefon, String miejscowosc, String ulica, String nr_domu) {
         String queryUpdate = "UPDATE klient SET nazwisko='" + nazwisko + "',imie='" + imie + "',kod_pocztowy='" + kod_pocztowy + "',miejscowosc='" + miejscowosc + "',ulica='" + ulica + "',nr_domu='" + nr_domu + "',telefon='" + telefon + "',login='" + login + "',haslo='" + haslo + "' WHERE login='" + login + "' AND haslo='" + haslo + "'";
         try {
-            Connection con = DriverManager.getConnection(url, user, password);
             Statement stmt = con.createStatement();
             int i = stmt.executeUpdate(queryUpdate);
             System.out.println(i);
@@ -178,9 +266,10 @@ public class DBManager {
         }
         return 0;
     }
-}
-   /*  public static void main(String[] args) {
-       klientList = new ArrayList<>();
+
+    public static void main(String[] args) {
+        wypozyczKsiazke("Zxcasd", "zxcasd", 1);
+      /* klientList = new ArrayList<>();
         String queryGetBooksForClient = "select id_klienta, imie,nazwisko, miejscowosc, ulica, nr_domu, kod_pocztowy, telefon, login, haslo from klient where login = '" + "kamilabudzik" + "'\n" +
                 "and haslo = '" + "gabigabi" + "'";
         try (Connection con = DriverManager.getConnection(url, user, password);
@@ -205,5 +294,6 @@ public class DBManager {
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
         }
         System.out.print(Arrays.toString(klientList.toArray()));
+    }*/
     }
-}*/
+}
