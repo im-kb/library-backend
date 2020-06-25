@@ -348,10 +348,10 @@ public class DBManager {
         }
         return autorList;
     }
-    public static int addBook(String tytul, String temat, String jezyk_ksiazki, String rok_wydania, String dostepnosc,String opis, String autor) {
-        String queryInsert = "INSERT INTO ksiazka (tytul,temat, autor,jezyk_ksiazki,rok_wydania,dostepnosc,opis)" +
-                "SELECT '" + tytul + "','" + temat + "','" + autor+"','" +jezyk_ksiazki + "','" + rok_wydania + "','" + dostepnosc +
-                "' WHERE NOT EXISTS (SELECT tytul FROM ksiazka WHERE tytul='" + tytul + "');";
+    public static int addBook(String tytul, String temat, String jezyk_ksiazki, String rok_wydania, String dostepnosc,String opis,String imieAutora,String nazwiskoAutora,String nazwaWydawnictwa) {
+        String queryInsert = "INSERT INTO ksiazka (tytul,id_autora, id_wydawnictwa,temat,jezyk_ksiazki,rok_wydania,dostepnosc,opis)" +
+                "VALUES ('" + tytul + "',(SELECT id_autora FROM autor WHERE imie ilike'" +imieAutora+"'AND nazwisko ilike'" +nazwiskoAutora + "')," +
+                                        "(SELECT id_wydawnictwa FROM wydawnictwo WHERE nazwa ilike'" +nazwaWydawnictwa+ "'),'"+temat+ "','"+jezyk_ksiazki+ "','" + rok_wydania+ "','"+dostepnosc+"','"+opis+"');";
         try {
             Statement stmt = con.createStatement();
             int i = stmt.executeUpdate(queryInsert);
