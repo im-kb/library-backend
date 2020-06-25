@@ -23,6 +23,15 @@ public class Ksiazka {
         this.dostepnosc = dostepnosc;
         this.opis = opis;
     }
+    public Ksiazka(String tytul, String temat,
+                   String jezykKsiazki, String rokWydania, String dostepnosc, String opis) {
+        this.tytul = tytul;
+        this.temat = temat;
+        this.jezykKsiazki = jezykKsiazki;
+        this.rokWydania = rokWydania;
+        this.dostepnosc = dostepnosc;
+        this.opis = opis;
+    }
 
     public String getIdKsiazki() {
         return idKsiazki;

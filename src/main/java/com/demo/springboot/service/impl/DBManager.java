@@ -1,8 +1,6 @@
 package com.demo.springboot.service.impl;
 
-import com.demo.springboot.domain.dto.KlientData;
-import com.demo.springboot.domain.dto.Ksiazka;
-import com.demo.springboot.domain.dto.WypozyczeniaKlienta;
+import com.demo.springboot.domain.dto.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,6 +10,8 @@ import java.util.logging.Logger;
 public class DBManager {
     private static ArrayList<Ksiazka> ksiazkaList;
     private static ArrayList<KlientData> klientList;
+    private static ArrayList<WydawnictwoData> wydawnictwoList;
+    private static ArrayList<AutorData> autorList;
 
     private static String url = "jdbc:postgresql://rogue.db.elephantsql.com:5432/cargbzfv";
     private static String user = "cargbzfv";
@@ -259,6 +259,102 @@ public class DBManager {
         try {
             Statement stmt = con.createStatement();
             int i = stmt.executeUpdate(queryUpdate);
+            System.out.println(i);
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static int addWydawnictwo(String nazwa, String miasto) {
+        String queryInsert = "INSERT INTO wydawnictwo (nazwa,miasto)" +
+                "SELECT '" + nazwa + "','" + miasto +
+                "' WHERE NOT EXISTS (SELECT nazwa FROM wydawnictwo WHERE nazwa='" + nazwa + "');";
+        try {
+            Statement stmt = con.createStatement();
+            int i = stmt.executeUpdate(queryInsert);
+            System.out.println(i);
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public static int addAutor(String nazwisko, String imie,String narodowosc,String okres_tworzenia,String jezyk) {
+        String queryInsert = "INSERT INTO autor (nazwisko,imie,narodowosc,okres_tworzenia,jezyk)" +
+                "SELECT '" + nazwisko + "','" + imie + "','" + narodowosc + "','" + okres_tworzenia + "','" +jezyk+
+                "' WHERE NOT EXISTS (SELECT nazwisko FROM autor WHERE nazwisko='" + nazwisko + "' AND imie='"+imie+"');";
+        try {
+            Statement stmt = con.createStatement();
+            int i = stmt.executeUpdate(queryInsert);
+            System.out.println(i);
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static ArrayList<WydawnictwoData> getWydawnictwo() { //wczytywywanie wydawnictw
+        wydawnictwoList = new ArrayList<>();
+        String queryGetWydawnictwa = "SELECT * FROM wydawnictwo";
+        try (
+                PreparedStatement pst = con.prepareStatement(queryGetWydawnictwa);
+                ResultSet rs = pst.executeQuery()) {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            String columnValue = "";
+            while (rs.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    columnValue = columnValue + rs.getString(i);
+                    columnValue = columnValue + ";;";
+                }
+                QUERY_RESULT_ROW = columnValue;
+                String[] tab = QUERY_RESULT_ROW.split(SPLIT_CHAR);
+                WydawnictwoData ks = new WydawnictwoData(tab[0], tab[1], tab[2]);
+                wydawnictwoList.add(ks);
+                columnValue = "";
+            }
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(DBManager.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return wydawnictwoList;
+    }
+    public static ArrayList<AutorData> getAutors() { //wczytywywanie autorow
+        autorList = new ArrayList<>();
+        String queryGetAutors = "SELECT * FROM autor";
+        try (
+                PreparedStatement pst = con.prepareStatement(queryGetAutors);
+                ResultSet rs = pst.executeQuery()) {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            String columnValue = "";
+            while (rs.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    columnValue = columnValue + rs.getString(i);
+                    columnValue = columnValue + ";;";
+                }
+                QUERY_RESULT_ROW = columnValue;
+                String[] tab = QUERY_RESULT_ROW.split(SPLIT_CHAR);
+                AutorData ks = new AutorData(tab[0], tab[1], tab[2],tab[3],tab[4],tab[5]);
+                autorList.add(ks);
+                columnValue = "";
+            }
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(DBManager.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return autorList;
+    }
+    public static int addBook(String tytul, String temat, String jezyk_ksiazki, String rok_wydania, String dostepnosc,String opis) {
+        String queryInsert = "INSERT INTO ksiazka (tytul,temat,jezyk_ksiazki,rok_wydania,dostepnosc,opis)" +
+                "SELECT '" + tytul + "','" + temat + "','" + jezyk_ksiazki + "','" + rok_wydania + "','" + dostepnosc +
+                "' WHERE NOT EXISTS (SELECT tytul FROM ksiazka WHERE tytul='" + tytul + "');";
+        try {
+            Statement stmt = con.createStatement();
+            int i = stmt.executeUpdate(queryInsert);
             System.out.println(i);
             return i;
         } catch (Exception e) {

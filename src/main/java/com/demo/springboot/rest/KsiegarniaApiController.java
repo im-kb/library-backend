@@ -24,6 +24,8 @@ import static com.demo.springboot.service.impl.DBManager.*;
 public class KsiegarniaApiController {
 
     ArrayList<Ksiazka> ksiazki = new ArrayList<Ksiazka>(getBooks());
+    ArrayList<WydawnictwoData> wydawnictwa = new ArrayList<WydawnictwoData>(getWydawnictwo());
+    ArrayList<AutorData> autorzy = new ArrayList<AutorData>(getAutors());
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KsiegarniaApiController.class);
 
@@ -85,6 +87,15 @@ public class KsiegarniaApiController {
         ksiazki = new ArrayList<Ksiazka>(getBooks());
     }
 
+    public void refreshWydawnictwa() {
+        LOGGER.info("Odswiezam Wydawnictwa bo dostalem GET");
+        wydawnictwa = new ArrayList<WydawnictwoData>(getWydawnictwo());
+    }
+
+    public void refreshAutors() {
+        LOGGER.info("Odswiezam Autorów bo dostalem GET");
+        autorzy = new ArrayList<AutorData>(getAutors());
+    }
 
     //http://127.0.0.1:8080/ksiegarnia/image/2
     @GetMapping(
@@ -203,6 +214,61 @@ public class KsiegarniaApiController {
             return new ResponseEntity<LoginData>(loginData, HttpStatus.OK);
         } else
             LOGGER.info("Blad przy wypozyczeniu");
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(value = "/addWydawnictwo")
+    public ResponseEntity test10(@RequestBody WydawnictwoData wydawnictwoValues) {
+        if (addWydawnictwo(wydawnictwoValues.getNazwa(), wydawnictwoValues.getMiasto()) != 0) {
+            LOGGER.info(wydawnictwoValues.toString());
+            LOGGER.info("dodano wydawnictwo.");
+            return new ResponseEntity<WydawnictwoData>(wydawnictwoValues, HttpStatus.OK);
+        } else
+            LOGGER.info("istnieje takie wydawnictwo ERROR.");
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(value = "/addAutor")
+    public ResponseEntity test11(@RequestBody AutorData autorValues) {
+        if (addAutor(autorValues.getNazwisko(), autorValues.getImie(), autorValues.getNarodowosc(), autorValues.getOkres_tworzenia(), autorValues.getJezyk()) != 0) {
+            LOGGER.info(autorValues.toString());
+            LOGGER.info("dodano autora.");
+            return new ResponseEntity<AutorData>(autorValues, HttpStatus.OK);
+        } else
+            LOGGER.info("istnieje taki autor ERROR.");
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping(value = "/getWydawnictwa")
+    public @ResponseBody
+    ResponseEntity<ArrayList<WydawnictwoData>> returnWydawnictwa() {
+        try {
+            ArrayList<WydawnictwoData> wydawnictwoData = wydawnictwa;
+            return new ResponseEntity<ArrayList<WydawnictwoData>>(wydawnictwoData, HttpStatus.OK);
+        } catch (
+                Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping(value = "/getAutorzy")
+    public @ResponseBody
+    ResponseEntity<ArrayList<AutorData>> returnAutors() {
+        try {
+            ArrayList<AutorData> autorData = autorzy;
+            return new ResponseEntity<ArrayList<AutorData>>(autorData, HttpStatus.OK);
+        } catch (
+                Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @PostMapping(value = "/addBook")
+    public ResponseEntity test12(@RequestBody Ksiazka ksiazkaValues) {
+        if (addBook(ksiazkaValues.getTytul(),ksiazkaValues.getTemat(),ksiazkaValues.getJezykKsiazki(),ksiazkaValues.getRokWydania(),ksiazkaValues.getDostepnosc(),ksiazkaValues.getOpis()) != 0) {
+            LOGGER.info(ksiazkaValues.toString());
+            LOGGER.info("dodano ksiazke.");
+            return new ResponseEntity<Ksiazka>(ksiazkaValues, HttpStatus.OK);
+        } else
+            LOGGER.info("istnieje taka ksiazka ERROR.");
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }
