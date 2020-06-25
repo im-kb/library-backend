@@ -14,6 +14,8 @@ public class WypozyczeniaKlienta {
         this.dataZwrotu = dataZwrotu;
     }
 
+
+
     public String getIdKsiazki() {
         return idKsiazki;
     }
