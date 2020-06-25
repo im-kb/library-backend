@@ -11,6 +11,9 @@ public class Ksiazka {
     private String dostepnosc;
     private String opis;
 
+    private String imieAutora;
+    private String nazwiskoAutora;
+
     public Ksiazka(String idKsiazki, String tytul, String autor, String wydawnictwo, String temat,
                    String jezykKsiazki, String rokWydania, String dostepnosc, String opis) {
         this.idKsiazki = idKsiazki;
@@ -23,15 +26,10 @@ public class Ksiazka {
         this.dostepnosc = dostepnosc;
         this.opis = opis;
     }
-    public Ksiazka(String tytul, String temat,
-                   String jezykKsiazki, String rokWydania, String dostepnosc, String opis) {
-        this.tytul = tytul;
-        this.temat = temat;
-        this.jezykKsiazki = jezykKsiazki;
-        this.rokWydania = rokWydania;
-        this.dostepnosc = dostepnosc;
-        this.opis = opis;
+
+    public Ksiazka() {
     }
+
 
     public String getIdKsiazki() {
         return idKsiazki;
@@ -67,5 +65,13 @@ public class Ksiazka {
 
     public String getOpis() {
         return opis;
+    }
+
+    public String getImieAutora() {
+        return imieAutora;
+    }
+
+    public String getNazwiskoAutora() {
+        return nazwiskoAutora;
     }
 }

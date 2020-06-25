@@ -348,9 +348,9 @@ public class DBManager {
         }
         return autorList;
     }
-    public static int addBook(String tytul, String temat, String jezyk_ksiazki, String rok_wydania, String dostepnosc,String opis) {
-        String queryInsert = "INSERT INTO ksiazka (tytul,temat,jezyk_ksiazki,rok_wydania,dostepnosc,opis)" +
-                "SELECT '" + tytul + "','" + temat + "','" + jezyk_ksiazki + "','" + rok_wydania + "','" + dostepnosc +
+    public static int addBook(String tytul, String temat, String jezyk_ksiazki, String rok_wydania, String dostepnosc,String opis, String autor) {
+        String queryInsert = "INSERT INTO ksiazka (tytul,temat, autor,jezyk_ksiazki,rok_wydania,dostepnosc,opis)" +
+                "SELECT '" + tytul + "','" + temat + "','" + autor+"','" +jezyk_ksiazki + "','" + rok_wydania + "','" + dostepnosc +
                 "' WHERE NOT EXISTS (SELECT tytul FROM ksiazka WHERE tytul='" + tytul + "');";
         try {
             Statement stmt = con.createStatement();
@@ -364,7 +364,7 @@ public class DBManager {
     }
 
     public static void main(String[] args) {
-        wypozyczKsiazke("Zxcasd", "zxcasd", 1);
+       // wypozyczKsiazke("Zxcasd", "zxcasd", 1);
       /* klientList = new ArrayList<>();
         String queryGetBooksForClient = "select id_klienta, imie,nazwisko, miejscowosc, ulica, nr_domu, kod_pocztowy, telefon, login, haslo from klient where login = '" + "kamilabudzik" + "'\n" +
                 "and haslo = '" + "gabigabi" + "'";

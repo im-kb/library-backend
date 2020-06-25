@@ -73,7 +73,7 @@ public class KsiegarniaApiController {
         // refreshBooks();
         try {
 
-            ArrayList<WypozyczeniaKlienta> wypozyczeniaKlienta = new ArrayList<WypozyczeniaKlienta>(getWypozyczeniaKlienta(login,password));
+            ArrayList<WypozyczeniaKlienta> wypozyczeniaKlienta = new ArrayList<WypozyczeniaKlienta>(getWypozyczeniaKlienta(login, password));
             return new ResponseEntity<ArrayList<WypozyczeniaKlienta>>(wypozyczeniaKlienta, HttpStatus.OK);
         } catch (
                 Exception e) {
@@ -250,6 +250,7 @@ public class KsiegarniaApiController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
     @GetMapping(value = "/getAutorzy")
     public @ResponseBody
     ResponseEntity<ArrayList<AutorData>> returnAutors() {
@@ -261,14 +262,33 @@ public class KsiegarniaApiController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
     @PostMapping(value = "/addBook")
     public ResponseEntity test12(@RequestBody Ksiazka ksiazkaValues) {
-        if (addBook(ksiazkaValues.getTytul(),ksiazkaValues.getTemat(),ksiazkaValues.getJezykKsiazki(),ksiazkaValues.getRokWydania(),ksiazkaValues.getDostepnosc(),ksiazkaValues.getOpis()) != 0) {
-            LOGGER.info(ksiazkaValues.toString());
-            LOGGER.info("dodano ksiazke.");
-            return new ResponseEntity<Ksiazka>(ksiazkaValues, HttpStatus.OK);
+        if (ksiazkaValues != null && ksiazkaValues.getTytul() != null &&ksiazkaValues.getTytul()!=null&& ksiazkaValues.getImieAutora() != null
+                && ksiazkaValues.getNazwiskoAutora() != null &&ksiazkaValues.getWydawnictwo()!=null && ksiazkaValues.getJezykKsiazki()!=null
+                &&ksiazkaValues.getRokWydania()!=null && ksiazkaValues.getDostepnosc()!=null&&ksiazkaValues.getOpis()!=null) {
+
+            LOGGER.info("tytul: " + ksiazkaValues.getTytul());
+            LOGGER.info("temat: " + ksiazkaValues.getTemat());
+            LOGGER.info("imieAutora: " + ksiazkaValues.getImieAutora());
+            LOGGER.info("nazwiskloAutora: " + ksiazkaValues.getNazwiskoAutora());
+            LOGGER.info("wydawn: " + ksiazkaValues.getWydawnictwo());
+            LOGGER.info("jezyk:+ " + ksiazkaValues.getJezykKsiazki());
+            LOGGER.info("rok: " + ksiazkaValues.getRokWydania());
+            LOGGER.info("dost: " + ksiazkaValues.getDostepnosc());
+            LOGGER.info("opis: " + ksiazkaValues.getOpis());
+
+
+
+
+          /*  if (addBook(ksiazkaValues.getTytul(), ksiazkaValues.getTemat(), ksiazkaValues.getJezykKsiazki(), ksiazkaValues.getRokWydania(), ksiazkaValues.getDostepnosc(), ksiazkaValues.getOpis(), ksiazkaValues.getAutor()) != 0) {
+                LOGGER.info(ksiazkaValues.toString());
+                LOGGER.info("dodano ksiazke.");
+                return new ResponseEntity<Ksiazka>(ksiazkaValues, HttpStatus.OK);
+            }*/
         } else
-            LOGGER.info("istnieje taka ksiazka ERROR.");
+            LOGGER.info("null.");
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }
