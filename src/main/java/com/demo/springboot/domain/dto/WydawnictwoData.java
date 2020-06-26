@@ -1,8 +1,5 @@
 package com.demo.springboot.domain.dto;
 
-//import lombok.AllArgsConstructor;
-
-//@AllArgsConstructor
 public class WydawnictwoData {
     private String id_wydawnictwa;
     private String nazwa;

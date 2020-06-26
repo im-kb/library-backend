@@ -101,7 +101,6 @@ public class KsiegarniaApiController {
         }
     }
 
-
     // @Scheduled(fixedRate = 5000)/////////////////////////////////////////TODO::: TERAZ ODSWIEZAJA SIE TYLKO PO  GET
     public void refreshBooks() {
         LOGGER.info("Odswiezam ksiazki bo dostalem GET");
@@ -131,7 +130,7 @@ public class KsiegarniaApiController {
         if (isLoginAndPasswordRightClient(loginValues.getLogin(), loginValues.getPassword())) {
             LOGGER.info(loginValues.toString());
             LOGGER.info("Login i haslo sie zgadzaja.");
-            return new ResponseEntity<LoginData>(loginValues, HttpStatus.OK);
+            return new ResponseEntity<>(loginValues, HttpStatus.OK);
         } else {
             LOGGER.info("Login i haslo sie nie zgadza.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //TODO:: to jest prymitywnie, pasuje zmienic
@@ -322,6 +321,7 @@ public class KsiegarniaApiController {
     ResponseEntity<ArrayList<WydawnictwoData>> returnWydawnictwa() {
         try {
             ArrayList<WydawnictwoData> wydawnictwoData = wydawnictwa;
+
             return new ResponseEntity<ArrayList<WydawnictwoData>>(wydawnictwoData, HttpStatus.OK);
         } catch (
                 Exception e) {

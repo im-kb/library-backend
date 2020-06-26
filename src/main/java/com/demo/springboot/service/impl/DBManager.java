@@ -454,32 +454,6 @@ public class DBManager {
     }
 
     public static void main(String[] args) {
-        // wypozyczKsiazke("Zxcasd", "zxcasd", 1);
-      /* klientList = new ArrayList<>();
-        String queryGetBooksForClient = "select id_klienta, imie,nazwisko, miejscowosc, ulica, nr_domu, kod_pocztowy, telefon, login, haslo from klient where login = '" + "kamilabudzik" + "'\n" +
-                "and haslo = '" + "gabigabi" + "'";
-        try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement(queryGetBooksForClient);
-             ResultSet rs = pst.executeQuery()) {
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnsNumber = rsmd.getColumnCount();
-            String columnValue = "";
-            while (rs.next()) {
-                for (int i = 1; i <= columnsNumber; i++) {
-                    columnValue = columnValue + rs.getString(i);
-                    columnValue = columnValue + ";;";
-                }
-                QUERY_RESULT_ROW = columnValue;
-                String[] tab = QUERY_RESULT_ROW.split(SPLIT_CHAR);
-                KlientData daneKlienta = new KlientData(tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], tab[6], tab[7], tab[8]);
-                klientList.add(daneKlienta);
-                columnValue = "";
-            }
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(DBManager.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        System.out.print(Arrays.toString(klientList.toArray()));
-    }*/
+
     }
 }

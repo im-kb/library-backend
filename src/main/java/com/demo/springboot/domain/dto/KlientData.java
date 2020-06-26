@@ -1,6 +1,5 @@
 package com.demo.springboot.domain.dto;
-//import lombok.AllArgsConstructor;
-//@AllArgsConstructor
+
 
 
 public class KlientData {
