@@ -8,10 +8,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DBManager {
-    private static ArrayList<Ksiazka> ksiazkaList;
-    private static ArrayList<KlientData> klientList;
+    private static ArrayList<BookDto> bookDtoList;
+    private static ArrayList<ClientDto> klientList;
     private static ArrayList<WydawnictwoData> wydawnictwoList;
-    private static ArrayList<AutorData> autorList;
+    private static ArrayList<AuthorDto> autorList;
 
     private static String url = "jdbc:postgresql://rogue.db.elephantsql.com:5432/cargbzfv";
     private static String user = "cargbzfv";
@@ -31,8 +31,8 @@ public class DBManager {
     public DBManager() throws SQLException {
     }
 
-    public static ArrayList<Ksiazka> getBooks() { //wczytywywanie ksiazek
-        ksiazkaList = new ArrayList<>();
+    public static ArrayList<BookDto> getBooks() { //wczytywywanie ksiazek
+        bookDtoList = new ArrayList<>();
         String queryGetBooksForClient = "SELECT k.id_ksiazki,k.tytul,\n" +
                 "a.imie || ' ' || a.nazwisko as AUTOR,\n" +
                 "w.nazwa || ' ' ||w.miasto as WYDAWNICTWO,\n" +
@@ -51,15 +51,15 @@ public class DBManager {
                 }
                 QUERY_RESULT_ROW = columnValue;
                 String[] tab = QUERY_RESULT_ROW.split(SPLIT_CHAR);
-                Ksiazka ks = new Ksiazka(tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], tab[6], tab[7], tab[8]);
-                ksiazkaList.add(ks);
+                BookDto ks = new BookDto(tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], tab[6], tab[7], tab[8]);
+                bookDtoList.add(ks);
                 columnValue = "";
             }
         } catch (SQLException ex) {
             Logger lgr = Logger.getLogger(DBManager.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
         }
-        return ksiazkaList;
+        return bookDtoList;
     }
 
     public static ArrayList<WypozyczeniaKlienta> getWypozyczeniaKlienta(String login, String password) {//TODO::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -119,7 +119,7 @@ public class DBManager {
         return klientWypozyczeniaList;
     }
 
-    public static ArrayList<KlientData> getKlient(String klientLogin, String klientPassword) { //wczytywywanie klienta
+    public static ArrayList<ClientDto> getKlient(String klientLogin, String klientPassword) { //wczytywywanie klienta
         klientList = new ArrayList<>();
         String queryGetBooksForClient = "select imie, nazwisko, miejscowosc, ulica, nr_domu, kod_pocztowy, telefon, login, haslo from klient where login = '" + klientLogin + "'\n" +
                 "and haslo = '" + klientPassword + "'";
@@ -136,7 +136,7 @@ public class DBManager {
                 }
                 QUERY_RESULT_ROW = columnValue;
                 String[] tab = QUERY_RESULT_ROW.split(SPLIT_CHAR);
-                KlientData daneKlienta = new KlientData(tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], tab[6], tab[7], tab[8]);
+                ClientDto daneKlienta = new ClientDto(tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], tab[6], tab[7], tab[8]);
                 klientList.add(daneKlienta);
                 columnValue = "";
             }
@@ -411,7 +411,7 @@ public class DBManager {
         return wydawnictwoList;
     }
 
-    public static ArrayList<AutorData> getAutors() { //wczytywywanie autorow
+    public static ArrayList<AuthorDto> getAutors() { //wczytywywanie autorow
         autorList = new ArrayList<>();
         String queryGetAutors = "SELECT * FROM autor";
         try (
@@ -427,7 +427,7 @@ public class DBManager {
                 }
                 QUERY_RESULT_ROW = columnValue;
                 String[] tab = QUERY_RESULT_ROW.split(SPLIT_CHAR);
-                AutorData ks = new AutorData(tab[0], tab[1], tab[2], tab[3], tab[4], tab[5]);
+                AuthorDto ks = new AuthorDto(tab[0], tab[1], tab[2], tab[3], tab[4], tab[5]);
                 autorList.add(ks);
                 columnValue = "";
             }

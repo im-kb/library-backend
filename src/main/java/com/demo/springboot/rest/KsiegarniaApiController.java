@@ -23,30 +23,30 @@ import static com.demo.springboot.service.impl.DBManager.*;
 
 public class KsiegarniaApiController {
 
-    ArrayList<Ksiazka> ksiazki = new ArrayList<Ksiazka>(getBooks());
+    ArrayList<BookDto> ksiazki = new ArrayList<BookDto>(getBooks());
     ArrayList<WydawnictwoData> wydawnictwa = new ArrayList<WydawnictwoData>(getWydawnictwo());
-    ArrayList<AutorData> autorzy = new ArrayList<AutorData>(getAutors());
+    ArrayList<AuthorDto> autorzy = new ArrayList<AuthorDto>(getAutors());
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KsiegarniaApiController.class);
 
     //http://127.0.0.1:8080/ksiegarnia/ksiazka/2
     @GetMapping(value = "/ksiazka/{id}")
     public @ResponseBody
-    ResponseEntity<Ksiazka> returnKsiazka(@PathVariable Integer id) {
+    ResponseEntity<BookDto> returnKsiazka(@PathVariable Integer id) {
         refreshBooks();
         id = id - 1;
         try {
-            final Ksiazka ksiazkiData = new Ksiazka(
-                    ksiazki.get(id).getIdKsiazki(),
-                    ksiazki.get(id).getTytul(),
-                    ksiazki.get(id).getAutor(),
-                    ksiazki.get(id).getWydawnictwo(),
-                    ksiazki.get(id).getTemat(),
-                    ksiazki.get(id).getJezykKsiazki(),
-                    ksiazki.get(id).getRokWydania(),
-                    ksiazki.get(id).getDostepnosc(),
-                    ksiazki.get(id).getOpis());
-            return new ResponseEntity<Ksiazka>(ksiazkiData, HttpStatus.OK);
+            final BookDto ksiazkiData = new BookDto(
+                    ksiazki.get(id).getBookId(),
+                    ksiazki.get(id).getTitle(),
+                    ksiazki.get(id).getAuthor(),
+                    ksiazki.get(id).getPublishingHouse(),
+                    ksiazki.get(id).getTopic(),
+                    ksiazki.get(id).getBookLanguage(),
+                    ksiazki.get(id).getPublicationDate(),
+                    ksiazki.get(id).getAvailability(),
+                    ksiazki.get(id).getDescription());
+            return new ResponseEntity<BookDto>(ksiazkiData, HttpStatus.OK);
         } catch (
                 Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -56,11 +56,11 @@ public class KsiegarniaApiController {
     //http://127.0.0.1:8080/ksiegarnia/ksiazki
     @GetMapping(value = "/ksiazki")
     public @ResponseBody
-    ResponseEntity<ArrayList<Ksiazka>> returnKsiazki() {
+    ResponseEntity<ArrayList<BookDto>> returnKsiazki() {
         refreshBooks();
         try {
-            ArrayList<Ksiazka> ksiazkiData = ksiazki;
-            return new ResponseEntity<ArrayList<Ksiazka>>(ksiazkiData, HttpStatus.OK);
+            ArrayList<BookDto> ksiazkiData = ksiazki;
+            return new ResponseEntity<ArrayList<BookDto>>(ksiazkiData, HttpStatus.OK);
         } catch (
                 Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -104,7 +104,7 @@ public class KsiegarniaApiController {
     // @Scheduled(fixedRate = 5000)/////////////////////////////////////////TODO::: TERAZ ODSWIEZAJA SIE TYLKO PO  GET
     public void refreshBooks() {
         LOGGER.info("Odswiezam ksiazki bo dostalem GET");
-        ksiazki = new ArrayList<Ksiazka>(getBooks());
+        ksiazki = new ArrayList<BookDto>(getBooks());
     }
 
     //http://127.0.0.1:8080/ksiegarnia/image/2
@@ -126,7 +126,7 @@ public class KsiegarniaApiController {
             "password": "gabigabi"
     }*/
     @PostMapping(value = "/login")
-    public ResponseEntity<LoginData> test5(@RequestBody LoginData loginValues) {
+    public ResponseEntity<LoginDto> test5(@RequestBody LoginDto loginValues) {
         if (isLoginAndPasswordRightClient(loginValues.getLogin(), loginValues.getPassword())) {
             LOGGER.info(loginValues.toString());
             LOGGER.info("Login i haslo sie zgadzaja.");
@@ -139,11 +139,11 @@ public class KsiegarniaApiController {
 
     //http://127.0.0.1:8080/ksiegarnia/loginAdmin
     @PostMapping(value = "/loginAdmin")
-    public ResponseEntity<LoginData> test6(@RequestBody LoginData loginValues) {
+    public ResponseEntity<LoginDto> test6(@RequestBody LoginDto loginValues) {
         if (isLoginAndPasswordRightAdmin(loginValues.getLogin(), loginValues.getPassword())) {
             LOGGER.info(loginValues.toString());
             LOGGER.info("Login i haslo sie zgadzaja.");
-            return new ResponseEntity<LoginData>(loginValues, HttpStatus.OK);
+            return new ResponseEntity<LoginDto>(loginValues, HttpStatus.OK);
         } else {
             LOGGER.info("Login i haslo sie nie zgadza.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -151,22 +151,22 @@ public class KsiegarniaApiController {
     }
 
     @PostMapping(value = "/register")
-    public ResponseEntity test6(@RequestBody KlientData registerValues) {
-        if (registerData(registerValues.getImie(), registerValues.getNazwisko(), registerValues.getLogin(), registerValues.getHaslo(), registerValues.getKodPocztowy(), registerValues.getTelefon(), registerValues.getMiejscowosc(), registerValues.getUlica(), registerValues.getNrDomu()) != 0) {
+    public ResponseEntity test6(@RequestBody ClientDto registerValues) {
+        if (registerData(registerValues.getName(), registerValues.getSurname(), registerValues.getLogin(), registerValues.getPassword(), registerValues.getPostalCode(), registerValues.getPhoneNumber(), registerValues.getCity(), registerValues.getStreet(), registerValues.getHouseNumber()) != 0) {
             LOGGER.info(registerValues.toString());
             LOGGER.info("zarejestrowano.");
-            return new ResponseEntity<KlientData>(registerValues, HttpStatus.OK);
+            return new ResponseEntity<ClientDto>(registerValues, HttpStatus.OK);
         } else
             LOGGER.info("istnieje taki login ERROR.");
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity test7(@RequestBody KlientData updatedValues) {
-        if (updateData(updatedValues.getImie(), updatedValues.getNazwisko(), updatedValues.getLogin(), updatedValues.getHaslo(), updatedValues.getKodPocztowy(), updatedValues.getTelefon(), updatedValues.getMiejscowosc(), updatedValues.getUlica(), updatedValues.getNrDomu()) != 0) {
+    public ResponseEntity test7(@RequestBody ClientDto updatedValues) {
+        if (updateData(updatedValues.getName(), updatedValues.getSurname(), updatedValues.getLogin(), updatedValues.getPassword(), updatedValues.getPostalCode(), updatedValues.getPhoneNumber(), updatedValues.getCity(), updatedValues.getStreet(), updatedValues.getHouseNumber()) != 0) {
             LOGGER.info(updatedValues.toString());
             LOGGER.info("Zaktualizowano.");
-            return new ResponseEntity<KlientData>(updatedValues, HttpStatus.OK);
+            return new ResponseEntity<ClientDto>(updatedValues, HttpStatus.OK);
         } else
             LOGGER.info("Brak zmian");
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -175,15 +175,15 @@ public class KsiegarniaApiController {
     //http://127.0.0.1:8080/ksiegarnia/klient?login=kamilabudzik&password=gabigabi
     @GetMapping(value = "/klient")
     public @ResponseBody
-    ResponseEntity<ArrayList<KlientData>> returnKlient(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
+    ResponseEntity<ArrayList<ClientDto>> returnKlient(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
 
         if (login != null && password != null && getKlient(login, password) != null) {
-            ArrayList<KlientData> daneKlienta = new ArrayList<KlientData>(getKlient(login, password));
+            ArrayList<ClientDto> daneKlienta = new ArrayList<ClientDto>(getKlient(login, password));
             LOGGER.info(login);
             LOGGER.info(password);
             LOGGER.info(Arrays.toString(daneKlienta.toArray()));
 
-            return new ResponseEntity<ArrayList<KlientData>>(daneKlienta, HttpStatus.OK);
+            return new ResponseEntity<ArrayList<ClientDto>>(daneKlienta, HttpStatus.OK);
         } else
             LOGGER.info("null");
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -193,14 +193,14 @@ public class KsiegarniaApiController {
     //http://127.0.0.1:8080/ksiegarnia/klient/usunkonto?login=zxcasdz&password=zxcasd
     @DeleteMapping(value = "/klient/usunkonto")
     public @ResponseBody
-    ResponseEntity<LoginData> deleteklient(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
+    ResponseEntity<LoginDto> deleteklient(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
 
         if (login != null && password != null && deleteClient(login, password) == 1) {
-            LoginData loginData = new LoginData(login, password);
+            LoginDto loginDto = new LoginDto(login, password);
             deleteClient(login, password);
             LOGGER.info("Pomyślnie skasowano konto");
 
-            return new ResponseEntity<LoginData>(loginData, HttpStatus.OK);
+            return new ResponseEntity<LoginDto>(loginDto, HttpStatus.OK);
         } else
             LOGGER.info("Blad przy kasowaniu konta");
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -209,9 +209,9 @@ public class KsiegarniaApiController {
     //http://127.0.0.1:8080/ksiegarnia/ksiazki/wypozycz?login=zxcasd&password=zxcasdd&idKsiazki=1
     @PostMapping(value = "/ksiazki/wypozycz")
     public @ResponseBody
-    ResponseEntity<LoginData> wypozyczKsiazkeAPI(@RequestParam(value = "login", required = true) String login,
-                                                 @RequestParam(value = "password", required = true) String password,
-                                                 @RequestParam(value = "idKsiazki", required = true) Integer idKsiazki) {
+    ResponseEntity<LoginDto> wypozyczKsiazkeAPI(@RequestParam(value = "login", required = true) String login,
+                                                @RequestParam(value = "password", required = true) String password,
+                                                @RequestParam(value = "idKsiazki", required = true) Integer idKsiazki) {
         if (login != null && password != null && idKsiazki != null
                 && !jestJuzWypozyczona(idKsiazki)
                 && isLoginAndPasswordRightClient(login, password)
@@ -221,8 +221,8 @@ public class KsiegarniaApiController {
             LOGGER.info("haslo:" + password);
             LOGGER.info("idksiazki:" + idKsiazki);
             wypozyczKsiazke(login, password, idKsiazki);
-            LoginData loginData = new LoginData(login, password);
-            return new ResponseEntity<LoginData>(loginData, HttpStatus.OK);
+            LoginDto loginDto = new LoginDto(login, password);
+            return new ResponseEntity<LoginDto>(loginDto, HttpStatus.OK);
         } else
             LOGGER.info("Czy jest wypozyczona:" + jestJuzWypozyczona(idKsiazki));
         LOGGER.info("Blad przy wypozyczeniu");
@@ -232,10 +232,10 @@ public class KsiegarniaApiController {
     //http://127.0.0.1:8080/ksiegarnia/ksiazki/usunWypozyczenie?login=admin&password=admin&idKsiazki=4&idKlienta=36
     @DeleteMapping(value = "/ksiazki/usunWypozyczenie")
     public @ResponseBody
-    ResponseEntity<LoginData> usunWypozyczenieAPI(@RequestParam(value = "login", required = true) String login,
-                                                  @RequestParam(value = "password", required = true) String password,
-                                                  @RequestParam(value = "idKsiazki", required = true) Integer idKsiazki,
-                                                  @RequestParam(value = "idKlienta", required = true) Integer idKlienta) {
+    ResponseEntity<LoginDto> usunWypozyczenieAPI(@RequestParam(value = "login", required = true) String login,
+                                                 @RequestParam(value = "password", required = true) String password,
+                                                 @RequestParam(value = "idKsiazki", required = true) Integer idKsiazki,
+                                                 @RequestParam(value = "idKlienta", required = true) Integer idKlienta) {
 
         if (login != null && password != null && idKsiazki != null
                 && jestJuzWypozyczona(idKsiazki)
@@ -245,8 +245,8 @@ public class KsiegarniaApiController {
             LOGGER.info("haslo:" + password);
             LOGGER.info("idksiazki:" + idKsiazki);
             usunWypozyczenie(idKsiazki, idKlienta);
-            LoginData loginData = new LoginData(login, password);
-            return new ResponseEntity<LoginData>(loginData, HttpStatus.OK);
+            LoginDto loginDto = new LoginDto(login, password);
+            return new ResponseEntity<LoginDto>(loginDto, HttpStatus.OK);
         } else
             LOGGER.info("Czy jest wypozyczona:" + jestJuzWypozyczona(idKsiazki));
         LOGGER.info("Blad przy usuwaniu wypozyzcania");
@@ -256,9 +256,9 @@ public class KsiegarniaApiController {
     //http://127.0.0.1:8080/ksiegarnia/ksiazki/usunKsiazke?login=admin&password=admin&idKsiazki=10
     @DeleteMapping(value = "/ksiazki/usunKsiazke")
     public @ResponseBody
-    ResponseEntity<LoginData> usunKsiazkeAPI(@RequestParam(value = "login", required = true) String login,
-                                             @RequestParam(value = "password", required = true) String password,
-                                             @RequestParam(value = "idKsiazki", required = true) Integer idKsiazki) {
+    ResponseEntity<LoginDto> usunKsiazkeAPI(@RequestParam(value = "login", required = true) String login,
+                                            @RequestParam(value = "password", required = true) String password,
+                                            @RequestParam(value = "idKsiazki", required = true) Integer idKsiazki) {
         if (login != null && password != null && idKsiazki != null && isLoginAndPasswordRightAdmin(login, password)
                 && jestJuzWypozyczona(idKsiazki) != true && czyIstniejeKsiazka(idKsiazki) == true) {
 
@@ -268,8 +268,8 @@ public class KsiegarniaApiController {
             LOGGER.info("Czy jest wypozyczona:" + jestJuzWypozyczona(idKsiazki));
 
             usunKsiazke(idKsiazki);
-            LoginData loginData = new LoginData(login, password);
-            return new ResponseEntity<LoginData>(loginData, HttpStatus.OK);
+            LoginDto loginDto = new LoginDto(login, password);
+            return new ResponseEntity<LoginDto>(loginDto, HttpStatus.OK);
         } else
             LOGGER.info("Blad przy usuwaniu");
         LOGGER.info("Czy jest wypozyczona:" + jestJuzWypozyczona(idKsiazki));
@@ -292,14 +292,14 @@ public class KsiegarniaApiController {
     }
 
     @PostMapping(value = "/addAutor")
-    public ResponseEntity test11(@RequestBody AutorData autorValues) {
-        if (addAutor(autorValues.getNazwisko(), autorValues.getImie(), autorValues.getNarodowosc(), autorValues.getOkres_tworzenia(), autorValues.getJezyk()) != 0) {
+    public ResponseEntity test11(@RequestBody AuthorDto autorValues) {
+        if (addAutor(autorValues.getSurname(), autorValues.getName(), autorValues.getNationality(), autorValues.getCreationPeriod(), autorValues.getLanguage()) != 0) {
             LOGGER.info(autorValues.toString());
             LOGGER.info("dodano autora.");
             refreshAutors();
             LOGGER.info("odswiezono autorow.");
 
-            return new ResponseEntity<AutorData>(autorValues, HttpStatus.OK);
+            return new ResponseEntity<AuthorDto>(autorValues, HttpStatus.OK);
         } else
             LOGGER.info("istnieje taki autor ERROR.");
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -312,7 +312,7 @@ public class KsiegarniaApiController {
 
     public void refreshAutors() {
         LOGGER.info("Odswiezam Autorów bo dostalem GET");
-        autorzy = new ArrayList<AutorData>(getAutors());
+        autorzy = new ArrayList<AuthorDto>(getAutors());
     }
 
     //http://127.0.0.1:8080/ksiegarnia/getWydawnictwa
@@ -332,10 +332,10 @@ public class KsiegarniaApiController {
     //http://127.0.0.1:8080/ksiegarnia/getAutorzy
     @GetMapping(value = "/getAutorzy")
     public @ResponseBody
-    ResponseEntity<ArrayList<AutorData>> returnAutors() {
+    ResponseEntity<ArrayList<AuthorDto>> returnAutors() {
         try {
-            ArrayList<AutorData> autorData = autorzy;
-            return new ResponseEntity<ArrayList<AutorData>>(autorData, HttpStatus.OK);
+            ArrayList<AuthorDto> authorData = autorzy;
+            return new ResponseEntity<ArrayList<AuthorDto>>(authorData, HttpStatus.OK);
         } catch (
                 Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -343,24 +343,24 @@ public class KsiegarniaApiController {
     }
 
     @PostMapping(value = "/addBook")
-    public ResponseEntity test12(@RequestBody Ksiazka ksiazkaValues) {
-        if (ksiazkaValues != null && ksiazkaValues.getTytul() != null && ksiazkaValues.getTytul() != null && ksiazkaValues.getImieAutora() != null
-                && ksiazkaValues.getNazwiskoAutora() != null && ksiazkaValues.getWydawnictwo() != null && ksiazkaValues.getJezykKsiazki() != null
-                && ksiazkaValues.getRokWydania() != null && ksiazkaValues.getDostepnosc() != null && ksiazkaValues.getOpis() != null) {
+    public ResponseEntity test12(@RequestBody BookDto bookDtoValues) {
+        if (bookDtoValues != null && bookDtoValues.getTitle() != null && bookDtoValues.getTitle() != null && bookDtoValues.getAuthorName() != null
+                && bookDtoValues.getAuthorSurname() != null && bookDtoValues.getPublishingHouse() != null && bookDtoValues.getBookLanguage() != null
+                && bookDtoValues.getPublicationDate() != null && bookDtoValues.getAvailability() != null && bookDtoValues.getDescription() != null) {
 
-            LOGGER.info("tytul: " + ksiazkaValues.getTytul());
-            LOGGER.info("temat: " + ksiazkaValues.getTemat());
-            LOGGER.info("imieAutora: " + ksiazkaValues.getImieAutora());
-            LOGGER.info("nazwiskloAutora: " + ksiazkaValues.getNazwiskoAutora());
-            LOGGER.info("wydawn: " + ksiazkaValues.getWydawnictwo());
-            LOGGER.info("jezyk: " + ksiazkaValues.getJezykKsiazki());
-            LOGGER.info("rok: " + ksiazkaValues.getRokWydania());
-            LOGGER.info("dost: " + ksiazkaValues.getDostepnosc());
-            LOGGER.info("opis: " + ksiazkaValues.getOpis());
-            if (addBook(ksiazkaValues.getTytul(), ksiazkaValues.getTemat(), ksiazkaValues.getJezykKsiazki(), ksiazkaValues.getRokWydania(), ksiazkaValues.getDostepnosc(), ksiazkaValues.getOpis(), ksiazkaValues.getImieAutora(), ksiazkaValues.getNazwiskoAutora(), ksiazkaValues.getWydawnictwo()) != 0) {
-                LOGGER.info(ksiazkaValues.toString());
+            LOGGER.info("tytul: " + bookDtoValues.getTitle());
+            LOGGER.info("temat: " + bookDtoValues.getTopic());
+            LOGGER.info("imieAutora: " + bookDtoValues.getAuthorName());
+            LOGGER.info("nazwiskloAutora: " + bookDtoValues.getAuthorSurname());
+            LOGGER.info("wydawn: " + bookDtoValues.getPublishingHouse());
+            LOGGER.info("jezyk: " + bookDtoValues.getBookLanguage());
+            LOGGER.info("rok: " + bookDtoValues.getPublicationDate());
+            LOGGER.info("dost: " + bookDtoValues.getAvailability());
+            LOGGER.info("opis: " + bookDtoValues.getDescription());
+            if (addBook(bookDtoValues.getTitle(), bookDtoValues.getTopic(), bookDtoValues.getBookLanguage(), bookDtoValues.getPublicationDate(), bookDtoValues.getAvailability(), bookDtoValues.getDescription(), bookDtoValues.getAuthorName(), bookDtoValues.getAuthorSurname(), bookDtoValues.getPublishingHouse()) != 0) {
+                LOGGER.info(bookDtoValues.toString());
                 LOGGER.info("dodano ksiazke.");
-                return new ResponseEntity<Ksiazka>(ksiazkaValues, HttpStatus.OK);
+                return new ResponseEntity<BookDto>(bookDtoValues, HttpStatus.OK);
 
             } else {
                 LOGGER.info("null.");
