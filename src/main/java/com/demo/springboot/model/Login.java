@@ -1,16 +1,16 @@
-package com.demo.springboot.domain.dto;
+package com.demo.springboot.model;
 
 
-public class LoginDto {
+public class Login {
 
 
     private String login;
     private String password;
 
-    public LoginDto() {
+    public Login() {
     }
 
-    public LoginDto(String login, String password) {
+    public Login(String login, String password) {
         this.login = login;
         this.password = password;
     }

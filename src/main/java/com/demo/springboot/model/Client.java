@@ -1,31 +1,46 @@
-package com.demo.springboot.domain.dto;
+package com.demo.springboot.model;
 
-public class ClientDto {
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+public class Client implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "client_id", nullable = false, updatable = false)
+    private Long clientId;
+
     private String login;
     private String password;
     private String name;
     private String surname;
+
+    @Column(name = "house_number")
     private String houseNumber;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
     private String street;
     private String city;
-    private String postalCode;
 
-    public ClientDto(String name, String surname, String city, String street, String houseNumber,
-                     String postalCode, String phoneNumber, String login, String password) {
+    @Column(name = "zip_code")
+    private String zipCode;
+
+    public Client(String name, String surname, String city, String street, String houseNumber,
+                  String zipCode, String phoneNumber, String login, String password) {
         this.name = name;
         this.surname = surname;
         this.city = city;
         this.street = street;
         this.houseNumber = houseNumber;
-        this.postalCode = postalCode;
+        this.zipCode = zipCode;
         this.phoneNumber = phoneNumber;
         this.login = login;
         this.password = password;
 
     }
 
-    public ClientDto() {
+    public Client() {
     }
 
     public String getLogin() {
@@ -60,10 +75,9 @@ public class ClientDto {
         return city;
     }
 
-    public String getPostalCode() {
-        return postalCode;
+    public String getZipCode() {
+        return zipCode;
     }
-
 
     @Override
     public String toString() {
@@ -76,9 +90,7 @@ public class ClientDto {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", street='" + street + '\'' +
                 ", city='" + city + '\'' +
-                ", postalCode='" + postalCode + '\'' +
+                ", postalCode='" + zipCode + '\'' +
                 '}';
     }
-
-
 }

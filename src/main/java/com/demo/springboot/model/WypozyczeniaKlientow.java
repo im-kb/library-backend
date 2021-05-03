@@ -1,4 +1,4 @@
-package com.demo.springboot.domain.dto;
+package com.demo.springboot.model;
 
 public class WypozyczeniaKlientow {
     private String idKsiazki;

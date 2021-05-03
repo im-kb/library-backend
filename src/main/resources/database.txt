@@ -1,0 +1,101 @@
+CREATE TABLE library.publishing_house (
+	  publishing_house_id bigint PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+	  name CHARACTER VARYING(40),
+	  city CHARACTER VARYING(50)
+);
+
+INSERT INTO library.publishing_house(name, city) VALUES
+	('Helion','Warszawa'),
+	('Nowa Era','Poznan'),
+	('Exlibris','Krakow'),
+	('Egmont Polska','Warszawa'),
+	('Swiat Ksiazki','Lublin');
+
+CREATE TABLE library.client (
+  client_id bigint PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+  surname CHARACTER VARYING(60),
+  name CHARACTER VARYING(40),
+  zip_code CHARACTER VARYING(6),
+  city CHARACTER VARYING(50),
+  street CHARACTER VARYING(50),
+  house_number CHARACTER VARYING(7),
+  phone_number CHARACTER VARYING(12),
+  login CHARACTER VARYING(20),
+  password CHARACTER VARYING(50)
+);
+
+INSERT INTO library.client(surname,name,zip_code,city,street,house_number,phone_number,login,password) VALUES
+('Konrad','Bączek','33-170','Tuchów','Dluga','51C','73121651174','kondziu12','passwordkondz'),
+('Kamil','Filipiewicz','33-170','Tuchów','Krotka','12D','69052391863','kamilabudzik','gabigabi'),
+('Bartłomiej','Hamernik','43-120','Plesna','Srednia','532','69021371863','golabartus','haselko'),
+('Piotr','Kura','13-20','Tarnowiec','Fajna','15','97111394612','piotruss','mimi23'),
+('Dominik','Dominikowskii','33-150','Krakow','Najdluzsza','55A','97101094612','dominikdd3','xdxd56'),
+('Dominik','Dominikowskii','33-10','Warszawa','Bardzo długa','12D','97101094612','dominikdd4','ccc66'),
+('Karol','Karolowskii','33-100','Tarnow','Strasznie krotka','12C','94042081645','kalolek76','cc5');
+
+
+CREATE TABLE library.author (
+  author_id bigint PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+  surname CHARACTER VARYING(50),
+  name CHARACTER VARYING(30),
+  nationality CHARACTER VARYING(30),
+  publication_period CHARACTER VARYING(35),
+  writing_language CHARACTER VARYING(30)
+);
+
+insert INTO library.author(name,surname,nationality,publication_period, writing_language ) VALUES
+('Bruce','Eckel','USA','XXI wiek','angielski'),
+('Craig','Walls','USA','XX wiek','angielski'),
+('Kamil','Duda','Polska','XIX wiek','polski'),
+('Konrad','Franczyszkiewicz','Polska','XXI wiek','polski'),
+('Piotr','Nowak','Szwajcaria','X wiek','niemiecki');
+
+
+CREATE TABLE library.book (
+  book_id bigint PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+  title CHARACTER VARYING(100),
+  author_id bigint,
+  publishing_house_id bigint,
+  genre CHARACTER VARYING(30),
+  book_language CHARACTER VARYING(15),
+  publication_date CHARACTER VARYING(4),
+  availability BOOLEAN,
+  description text,
+CONSTRAINT book_fk_a FOREIGN KEY(author_id) REFERENCES library.author(author_id),
+CONSTRAINT book_fk_b FOREIGN KEY(publishing_house_id) REFERENCES library.publishing_house(publishing_house_id)
+);
+
+INSERT INTO library.book(title,author_id,publishing_house_id,genre,book_language,publication_date,availability, description)VALUES
+('Thinking in Java. Edycja polska. Wydanie IV',1,1,'Programowanie','polski','2009',true, 'Książka "Thinking in Java. Edycja polska. Wydanie IV" zawiera szczegółowe omówienie zasad programowania w Javie. Przeznaczona jest dla początkujących programistów i dla ekspertów. Przystępnie prezentuje zarówno zagadnienia podstawowe, jak i zaawansowane. Dziesiątki przykładów ułatwiają zrozumienie każdego genreu. Wszystko to sprawia, że poznajemy prawdziwą Javę -- uniwersalną, czytelną, niezależną od platformy systemowej. Czytając tę książkę, dowiesz się, co jest niezbędne do tworzenia wydajnych i bezpiecznych aplikacji w Javie.'),
+('Spring w akcji. Wydanie V',2,1,'Programowanie','polski','2009',true, 'Spring jest frameworkiem ułatwiającym tworzenie nowoczesnych aplikacji w Javie. To narzędzie, które dynamicznie się rozwija i z każdym nowym wydaniem zapewnia programistom kolejne, ekscytujące możliwości. Piąta wersja Springa okazała się krokiem milowym. Obecnie projektanci mogą tworzyć mikrousługi, korzystać z funkcji programowania reaktywnego i doskonalić budowanie aplikacji zgodnie z modelem MVC. Dzięki pełnej integracji Springa ze Spring Boot nawet najbardziej złożone projekty wymagają minimalnej ilości kodu konfiguracyjnego. W efekcie tworzone aplikacje internetowe są w większym stopniu skalowalne i efektywniejsze w wykorzystywaniu wątków.'),
+('O istocie ludzkiej',3,'2','filozofia','grecki','1932',false, 'description'),
+('Chemia smierci',3,'4','kriminal','angielski','1972',true, 'description'),
+('Hambet',4,'2','sztuka teatralna','litewski','1927',false, 'description'),
+('Wojna swiatow',5,'5','dreszczowiec','turecki','2010',false, 'description');
+
+CREATE TABLE library.rented_books(
+  book_id bigint,
+  client_id bigint,
+  rental_date DATE,
+  return_date DATE,
+CONSTRAINT rented_books_fk_a FOREIGN KEY(book_id) REFERENCES library.book(book_id),
+CONSTRAINT rented_books_fk_b FOREIGN KEY(client_id) REFERENCES library.client(client_id)
+);
+
+INSERT INTO library.rented_books(book_id,client_id,rental_date,return_date)VALUES
+(3,4,'2020-05-04','2020-07-04'),
+(5,1,'2020-04-04','2020-06-04'),
+(6,3,'2020-05-07','2020-07-07');
+
+
+
+CREATE TABLE library.administrator
+(
+    id_administratora bigint PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    login character varying(20),
+    password character varying(10),
+    CONSTRAINT admin_pkey PRIMARY KEY (id_administratora)
+)
+
+INSERT INTO library.administrator(login,password)VALUES
+('admin','admin')
