@@ -40,4 +40,7 @@ public class LibraryService {
     }
 
 
+    public boolean existsByLoginAndPassword(String login, String password) {
+        return clientRepo.existsByLoginAndPassword(login,password);
+    }
 }

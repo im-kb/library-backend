@@ -54,4 +54,13 @@ public class LibraryController {
         return new ResponseEntity<>(newClient, HttpStatus.CREATED);
     }
 
+    @PostMapping(value = "/login")
+    public ResponseEntity<HttpStatus> login (@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
+        if (libraryService.existsByLoginAndPassword(login,password)==false){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+
 }

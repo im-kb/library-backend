@@ -3,7 +3,8 @@ package com.demo.springboot.model;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
+@Entity(name="client")
+@Table(name="client")
 public class Client implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
