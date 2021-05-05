@@ -5,6 +5,7 @@ import com.demo.springboot.model.Client;
 import com.demo.springboot.repository.BookRepository;
 import com.demo.springboot.repository.ClientRepository;
 import exception.BookNotFoundException;
+import exception.ClientNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +23,15 @@ public class LibraryService {
 
     private final ClientRepository clientRepo;
 
-
 //    public Book addBook(Book book) {
 //        return bookRepo.save(book);
 //    }
 
     public Client addClient(Client client) {
+        return clientRepo.save(client);
+    }
+
+    public Client updateClient(Client client) {
         return clientRepo.save(client);
     }
 
@@ -39,8 +43,11 @@ public class LibraryService {
         return bookRepo.findAll();
     }
 
-
     public boolean existsByLoginAndPassword(String login, String password) {
-        return clientRepo.existsByLoginAndPassword(login,password);
+        return clientRepo.existsByLoginAndPassword(login, password);
+    }
+
+    public Client findClientByLoginAndPassword(String login, String password) {
+        return clientRepo.findClientByLoginAndPassword(login, password).orElseThrow(() -> new ClientNotFoundException("User with login: " + login + "not found"));
     }
 }

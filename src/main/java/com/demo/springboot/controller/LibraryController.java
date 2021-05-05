@@ -30,7 +30,7 @@ public class LibraryController {
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
-    @GetMapping("/book/{bookId}")
+    @GetMapping("/books/{bookId}")
     public ResponseEntity<Book> getBookById(@PathVariable("bookId") Long bookId) {
         Book book = libraryService.findBookByBookId(bookId);
         return new ResponseEntity<>(book, HttpStatus.OK);
@@ -48,19 +48,32 @@ public class LibraryController {
         return IOUtils.toByteArray(in);
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<Client> addClient(@RequestBody Client client){
-        Client newClient =  libraryService.addClient(client);
+    //CLIENT SECTION_______________________________________
+    @GetMapping("/client")
+    public ResponseEntity<Client> getClientData(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
+        Client client = libraryService.findClientByLoginAndPassword(login, password);
+        return new ResponseEntity<>(client, HttpStatus.OK);
+    }
+
+    @PostMapping("/client/register")
+    public ResponseEntity<Client> addClient(@RequestBody Client client) {
+        Client newClient = libraryService.addClient(client);
         return new ResponseEntity<>(newClient, HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/login")
-    public ResponseEntity<HttpStatus> login (@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
-        if (libraryService.existsByLoginAndPassword(login,password)==false){
+    @PutMapping("/client/update")
+    public ResponseEntity<Client> updateClient(@RequestBody Client client) {
+        Client updatedClient = libraryService.updateClient(client);
+            return new ResponseEntity<>(updatedClient, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/client/login")
+    public ResponseEntity<HttpStatus> login(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
+        if (libraryService.existsByLoginAndPassword(login, password) == false) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } else {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
-
+    //End of CLIENT__________________________________________
 }

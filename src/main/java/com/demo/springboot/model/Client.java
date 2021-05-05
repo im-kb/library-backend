@@ -3,8 +3,8 @@ package com.demo.springboot.model;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity(name="client")
-@Table(name="client")
+@Entity(name = "client")
+@Table(name = "client")
 public class Client implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,21 +27,11 @@ public class Client implements Serializable {
     @Column(name = "zip_code")
     private String zipCode;
 
-    public Client(String name, String surname, String city, String street, String houseNumber,
-                  String zipCode, String phoneNumber, String login, String password) {
-        this.name = name;
-        this.surname = surname;
-        this.city = city;
-        this.street = street;
-        this.houseNumber = houseNumber;
-        this.zipCode = zipCode;
-        this.phoneNumber = phoneNumber;
-        this.login = login;
-        this.password = password;
-
+    public Client() {
     }
 
-    public Client() {
+    public Long getClientId() {
+        return clientId;
     }
 
     public String getLogin() {
