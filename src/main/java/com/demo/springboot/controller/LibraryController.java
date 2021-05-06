@@ -7,6 +7,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -24,6 +25,8 @@ public class LibraryController {
         this.libraryService = libraryService;
     }
 
+
+    //BOOK SECTION_______________________________________
     @GetMapping("/books/all")
     public ResponseEntity<List<Book>> getAllUsers() {
         List<Book> books = libraryService.getAllBooks();
@@ -48,6 +51,20 @@ public class LibraryController {
         return IOUtils.toByteArray(in);
     }
 
+    @PostMapping("/books/add")
+    public ResponseEntity<Book> addBook(@RequestBody Book book) {
+        Book newBook = libraryService.addBook(book);
+        return new ResponseEntity<>(newBook, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/books/update")
+    public ResponseEntity<Book> updateClient(@RequestBody Book book) {
+        Book updatedBook = libraryService.updateBook(book);
+        return new ResponseEntity<>(updatedBook, HttpStatus.OK);
+    }
+
+    //END OF BOOK SECTION_______________________________________
+
     //CLIENT SECTION_______________________________________
     @GetMapping("/client")
     public ResponseEntity<Client> getClientData(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
@@ -64,7 +81,7 @@ public class LibraryController {
     @PutMapping("/client/update")
     public ResponseEntity<Client> updateClient(@RequestBody Client client) {
         Client updatedClient = libraryService.updateClient(client);
-            return new ResponseEntity<>(updatedClient, HttpStatus.OK);
+        return new ResponseEntity<>(updatedClient, HttpStatus.OK);
     }
 
     @PostMapping(value = "/client/login")
@@ -74,6 +91,13 @@ public class LibraryController {
         } else {
             return new ResponseEntity<>(HttpStatus.OK);
         }
+    }
+
+    @Transactional
+    @DeleteMapping("/client/delete_account")
+    public ResponseEntity<Client> deleteClient(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
+        Client removedClient = libraryService.deleteClientByLoginAndPassword(login, password);
+        return new ResponseEntity<>(removedClient, HttpStatus.OK);
     }
     //End of CLIENT__________________________________________
 }

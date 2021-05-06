@@ -13,7 +13,7 @@ public class Book implements Serializable {
     private String title;
 
     @Column(name = "publishing_house_id")
-    private String publishingHouseId;
+    private Long publishingHouseId;
 
     private String genre;
 
@@ -26,13 +26,6 @@ public class Book implements Serializable {
     private Boolean availability;
     private String description;
 
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
 
     @ManyToOne()
     @JoinColumn(name = "author_id", referencedColumnName = "author_id")
@@ -50,8 +43,7 @@ public class Book implements Serializable {
         return title;
     }
 
-
-    public String getPublishingHouseId() {
+    public Long getPublishingHouseId() {
         return publishingHouseId;
     }
 
@@ -73,6 +65,10 @@ public class Book implements Serializable {
 
     public String getDescription() {
         return description;
+    }
+
+    public Author getAuthor() {
+        return author;
     }
 
 }
