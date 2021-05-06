@@ -2,6 +2,7 @@ package com.demo.springboot.controller;
 
 import com.demo.springboot.model.Book;
 import com.demo.springboot.model.Client;
+import com.demo.springboot.model.PublishingHouse;
 import com.demo.springboot.service.LibraryService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
@@ -100,4 +101,20 @@ public class LibraryController {
         return new ResponseEntity<>(removedClient, HttpStatus.OK);
     }
     //End of CLIENT__________________________________________
+
+    //PUBLISHING HOUSE______________________________________
+    @GetMapping("/publishing_houses/all")
+    public ResponseEntity<List<PublishingHouse>> getAllPublishingHouses() {
+        List<PublishingHouse> publishingHouses = libraryService.getAllPublishingHouses();
+        return new ResponseEntity<>(publishingHouses, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/publishing_houses/add")
+    public ResponseEntity<PublishingHouse> addPublishingHouse(@RequestBody PublishingHouse publishingHouse) {
+        PublishingHouse newPublishingHouse  = libraryService.addPublishingHouse(publishingHouse);
+        return new ResponseEntity<>(newPublishingHouse, HttpStatus.CREATED);
+    }
+    //END OF PUBLISHING HOUSE SECTION_______________________________________
+
 }

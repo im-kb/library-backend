@@ -6,8 +6,7 @@ import java.io.Serializable;
 @Entity
 public class PublishingHouse implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "auto_gen")
-    @SequenceGenerator(name = "auto_gen", sequenceName = "A")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="publishing_house_id", nullable = false, updatable = false)
     private Long publishingHouseId;
 
@@ -16,10 +15,6 @@ public class PublishingHouse implements Serializable {
 
 
     public PublishingHouse() { }
-    public PublishingHouse(String name, String city) {
-        this.name = name;
-        this.city = city;
-    }
 
     public String getName() {return name;}
     public Long getPublishingHouseId() {return publishingHouseId;}
