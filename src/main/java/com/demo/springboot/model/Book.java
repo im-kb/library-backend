@@ -12,8 +12,6 @@ public class Book implements Serializable {
 
     private String title;
 
-    @Column(name = "publishing_house_id")
-    private Long publishingHouseId;
 
     private String genre;
 
@@ -25,6 +23,10 @@ public class Book implements Serializable {
 
     private Boolean availability;
     private String description;
+
+    @ManyToOne()
+    @JoinColumn(name = "publishing_house_id", referencedColumnName = "publishing_house_id")
+    private PublishingHouse publishingHouse;
 
 
     @ManyToOne()
@@ -43,8 +45,8 @@ public class Book implements Serializable {
         return title;
     }
 
-    public Long getPublishingHouseId() {
-        return publishingHouseId;
+    public PublishingHouse getPublishingHouse() {
+        return publishingHouse;
     }
 
     public String getGenre() {

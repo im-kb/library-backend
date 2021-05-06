@@ -8,7 +8,7 @@ public class PublishingHouse implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "auto_gen")
     @SequenceGenerator(name = "auto_gen", sequenceName = "A")
-    @Column(nullable = false, updatable = false)
+    @Column(name="publishing_house_id", nullable = false, updatable = false)
     private Long publishingHouseId;
 
     private String name;
