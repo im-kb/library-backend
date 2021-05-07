@@ -1,13 +1,7 @@
 package com.demo.springboot.service;
 
-import com.demo.springboot.model.Author;
-import com.demo.springboot.model.Book;
-import com.demo.springboot.model.Client;
-import com.demo.springboot.model.PublishingHouse;
-import com.demo.springboot.repository.AuthorRepository;
-import com.demo.springboot.repository.BookRepository;
-import com.demo.springboot.repository.ClientRepository;
-import com.demo.springboot.repository.PublishingHouseRepository;
+import com.demo.springboot.model.*;
+import com.demo.springboot.repository.*;
 import exception.BookNotFoundException;
 import exception.ClientNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +15,17 @@ public class LibraryService {
     private final ClientRepository clientRepo;
     private final PublishingHouseRepository publHouseRepo;
     private final AuthorRepository authorRepo;
+    private final RentalRepository rentedBookRepo;
+    private final AdminRepository adminRepo;
 
     @Autowired
-    public LibraryService(BookRepository bookRepo, ClientRepository clientRepo, PublishingHouseRepository publHouseRepo, AuthorRepository authorRepo) {
+    public LibraryService(BookRepository bookRepo, ClientRepository clientRepo, PublishingHouseRepository publHouseRepo, AuthorRepository authorRepo, RentalRepository rentedBookRepo, AdminRepository adminRepo) {
         this.bookRepo = bookRepo;
         this.clientRepo = clientRepo;
         this.publHouseRepo = publHouseRepo;
         this.authorRepo = authorRepo;
+        this.rentedBookRepo = rentedBookRepo;
+        this.adminRepo = adminRepo;
     }
 
     //BOOK SECTION_______________________________________
@@ -65,7 +63,7 @@ public class LibraryService {
     }
 
     public Client findClientByLoginAndPassword(String login, String password) {
-        return clientRepo.findClientByLoginAndPassword(login, password).orElseThrow(() -> new ClientNotFoundException("Client with login: " + login + " not found"));
+        return clientRepo.findClientByLoginAndPassword(login, password).orElseThrow(() -> new ClientNotFoundException("Wrong login or password."));
     }
 
     public Client deleteClientByLoginAndPassword(String login, String password) {
@@ -73,7 +71,7 @@ public class LibraryService {
             Client removedClient = clientRepo.deleteClientByLoginAndPassword(login, password).get(0);
             return removedClient;
         } else {
-            throw new ClientNotFoundException("Client with login: " + login + " not found");
+            throw new ClientNotFoundException("Wrong login or password.");
         }
     }
 
@@ -93,7 +91,7 @@ public class LibraryService {
 
     }
 
-    //AUTHOR HOUSE______________________________________
+    //AUTHOR______________________________________
     public List<Author> getAllAuthors() {
         return authorRepo.findAll();
     }
@@ -107,4 +105,25 @@ public class LibraryService {
 
     }
 
+    //Rentals
+    public List<Rental> getAllRentals() {
+        return rentedBookRepo.findAll();
+    }
+
+    public List<Rental> getRentalByClientLoginAndPassword(String login, String password) {
+        if (clientRepo.existsByLoginAndPassword(login, password)) {
+            return rentedBookRepo.getRentalByClientLoginAndPassword(login, password);
+        } else {
+            throw new ClientNotFoundException("Wrong login or password.");
+        }
+    }
+
+    //ADMIN
+    public Boolean adminExistsByLoginAndPassword(String login, String password) {
+        if (adminRepo.existsByLoginAndPassword(login, password) == true) {
+            return true;
+        } else {
+            throw new ClientNotFoundException("Wrong login or password.");
+        }
+    }
 }

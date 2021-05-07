@@ -69,19 +69,4 @@ public class Client implements Serializable {
     public String getZipCode() {
         return zipCode;
     }
-
-    @Override
-    public String toString() {
-        return "ClientDto{" +
-                "login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", houseNumber='" + houseNumber + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", street='" + street + '\'' +
-                ", city='" + city + '\'' +
-                ", postalCode='" + zipCode + '\'' +
-                '}';
-    }
 }

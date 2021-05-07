@@ -1,9 +1,6 @@
 package com.demo.springboot.controller;
 
-import com.demo.springboot.model.Author;
-import com.demo.springboot.model.Book;
-import com.demo.springboot.model.Client;
-import com.demo.springboot.model.PublishingHouse;
+import com.demo.springboot.model.*;
 import com.demo.springboot.service.LibraryService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
@@ -26,7 +23,6 @@ public class LibraryController {
     public LibraryController(LibraryService libraryService) {
         this.libraryService = libraryService;
     }
-
 
     //BOOK SECTION_______________________________________
     @GetMapping("/books/all")
@@ -113,7 +109,7 @@ public class LibraryController {
 
     @PostMapping("/publishing_houses/add")
     public ResponseEntity<PublishingHouse> addPublishingHouse(@RequestBody PublishingHouse publishingHouse) {
-        PublishingHouse newPublishingHouse  = libraryService.addPublishingHouse(publishingHouse);
+        PublishingHouse newPublishingHouse = libraryService.addPublishingHouse(publishingHouse);
         return new ResponseEntity<>(newPublishingHouse, HttpStatus.CREATED);
     }
     //END OF PUBLISHING HOUSE SECTION_______________________________________
@@ -126,11 +122,31 @@ public class LibraryController {
         return new ResponseEntity<>(authors, HttpStatus.OK);
     }
 
-
     @PostMapping("/authors/add")
     public ResponseEntity<Author> addAuthor(@RequestBody Author author) {
-        Author newAuthor  = libraryService.addAuthor(author);
+        Author newAuthor = libraryService.addAuthor(author);
         return new ResponseEntity<>(newAuthor, HttpStatus.CREATED);
     }
 
+    //RENTED BOOKS SECTION_______________________________________
+    @GetMapping("/books/rented/all")
+    public ResponseEntity<List<Rental>> getAllRentals() {
+        List<Rental> rentals = libraryService.getAllRentals();
+        return new ResponseEntity<>(rentals, HttpStatus.OK);
+    }
+
+    @GetMapping("/client/rentals")
+    public ResponseEntity<List<Rental>> getClientRentals(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
+        List<Rental> clientRentals = libraryService.getRentalByClientLoginAndPassword(login, password);
+        return new ResponseEntity<>(clientRentals, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/admin/login")
+    public ResponseEntity<HttpStatus> loginAdmin(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
+        if (libraryService.adminExistsByLoginAndPassword(login, password) == false) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
 }
