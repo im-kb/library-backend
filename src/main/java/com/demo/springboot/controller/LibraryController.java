@@ -1,5 +1,6 @@
 package com.demo.springboot.controller;
 
+import com.demo.springboot.model.Author;
 import com.demo.springboot.model.Book;
 import com.demo.springboot.model.Client;
 import com.demo.springboot.model.PublishingHouse;
@@ -116,5 +117,20 @@ public class LibraryController {
         return new ResponseEntity<>(newPublishingHouse, HttpStatus.CREATED);
     }
     //END OF PUBLISHING HOUSE SECTION_______________________________________
+
+
+    //AUTHOR______________________________________
+    @GetMapping("/authors/all")
+    public ResponseEntity<List<Author>> getAllAuthors() {
+        List<Author> authors = libraryService.getAllAuthors();
+        return new ResponseEntity<>(authors, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/authors/add")
+    public ResponseEntity<Author> addAuthor(@RequestBody Author author) {
+        Author newAuthor  = libraryService.addAuthor(author);
+        return new ResponseEntity<>(newAuthor, HttpStatus.CREATED);
+    }
 
 }

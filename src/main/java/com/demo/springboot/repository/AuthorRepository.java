@@ -1,9 +1,9 @@
 package com.demo.springboot.repository;
 
-import com.demo.springboot.model.PublishingHouse;
+import com.demo.springboot.model.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PublishingHouseRepository extends JpaRepository<PublishingHouse, Long> {
+public interface AuthorRepository extends JpaRepository<Author, Long> {
 }

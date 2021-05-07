@@ -1,8 +1,10 @@
 package com.demo.springboot.service;
 
+import com.demo.springboot.model.Author;
 import com.demo.springboot.model.Book;
 import com.demo.springboot.model.Client;
 import com.demo.springboot.model.PublishingHouse;
+import com.demo.springboot.repository.AuthorRepository;
 import com.demo.springboot.repository.BookRepository;
 import com.demo.springboot.repository.ClientRepository;
 import com.demo.springboot.repository.PublishingHouseRepository;
@@ -18,12 +20,14 @@ public class LibraryService {
     private final BookRepository bookRepo;
     private final ClientRepository clientRepo;
     private final PublishingHouseRepository publHouseRepo;
+    private final AuthorRepository authorRepo;
 
     @Autowired
-    public LibraryService(BookRepository bookRepo, ClientRepository clientRepo, PublishingHouseRepository publHouseRepo) {
+    public LibraryService(BookRepository bookRepo, ClientRepository clientRepo, PublishingHouseRepository publHouseRepo, AuthorRepository authorRepo) {
         this.bookRepo = bookRepo;
         this.clientRepo = clientRepo;
         this.publHouseRepo = publHouseRepo;
+        this.authorRepo = authorRepo;
     }
 
     //BOOK SECTION_______________________________________
@@ -35,11 +39,9 @@ public class LibraryService {
         return bookRepo.findAll();
     }
 
-
     public Book addBook(Book book) {
         return bookRepo.save(book);
     }
-
 
     public Book updateBook(Book book) {
         return bookRepo.save(book);
@@ -83,13 +85,26 @@ public class LibraryService {
     }
 
     public PublishingHouse addPublishingHouse(PublishingHouse publishingHouse) {
-        if (publishingHouse.getCity() != null &&publishingHouse.getName()!=null) {
+        if (publishingHouse.getCity() != null && publishingHouse.getName() != null) {
             return publHouseRepo.save(publishingHouse);
         } else {
             throw new IllegalArgumentException("Illegal argument");
         }
 
     }
-    //END OF PUBLISHING HOUSE SECTION_______________________________________
+
+    //AUTHOR HOUSE______________________________________
+    public List<Author> getAllAuthors() {
+        return authorRepo.findAll();
+    }
+
+    public Author addAuthor(Author author) {
+        if (author.getName() != null && author.getNationality() != null && author.getSurname() != null) {
+            return authorRepo.save(author);
+        } else {
+            throw new IllegalArgumentException("Illegal argument");
+        }
+
+    }
 
 }
