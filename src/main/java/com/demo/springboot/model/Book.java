@@ -11,7 +11,6 @@ public class Book implements Serializable {
     private Long bookId;
 
     private String title;
-
     private String genre;
 
     @Column(name = "book_language")

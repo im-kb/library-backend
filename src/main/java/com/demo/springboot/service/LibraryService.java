@@ -15,16 +15,16 @@ public class LibraryService {
     private final ClientRepository clientRepo;
     private final PublishingHouseRepository publHouseRepo;
     private final AuthorRepository authorRepo;
-    private final RentalRepository rentedBookRepo;
+    private final RentalRepository rentalRepo;
     private final AdminRepository adminRepo;
 
     @Autowired
-    public LibraryService(BookRepository bookRepo, ClientRepository clientRepo, PublishingHouseRepository publHouseRepo, AuthorRepository authorRepo, RentalRepository rentedBookRepo, AdminRepository adminRepo) {
+    public LibraryService(BookRepository bookRepo, ClientRepository clientRepo, PublishingHouseRepository publHouseRepo, AuthorRepository authorRepo, RentalRepository rentalRepo, AdminRepository adminRepo) {
         this.bookRepo = bookRepo;
         this.clientRepo = clientRepo;
         this.publHouseRepo = publHouseRepo;
         this.authorRepo = authorRepo;
-        this.rentedBookRepo = rentedBookRepo;
+        this.rentalRepo = rentalRepo;
         this.adminRepo = adminRepo;
     }
 
@@ -43,6 +43,15 @@ public class LibraryService {
 
     public Book updateBook(Book book) {
         return bookRepo.save(book);
+    }
+
+    public Book deleteBookByBookId(Long bookId) {
+        if (bookRepo.existsById(bookId)) {
+            Book removedBook = bookRepo.deleteBookByBookId(bookId).get(0);
+            return removedBook;
+        } else {
+            throw new BookNotFoundException("Book with id " + bookId + " not found");
+        }
     }
 
     //END OF BOOK SECTION_______________________________________
@@ -74,7 +83,6 @@ public class LibraryService {
             throw new ClientNotFoundException("Wrong login or password.");
         }
     }
-
     //END OF CLIENT SECTION_______________________________________
 
     //PUBLISHING HOUSE______________________________________
@@ -107,14 +115,33 @@ public class LibraryService {
 
     //Rentals
     public List<Rental> getAllRentals() {
-        return rentedBookRepo.findAll();
+        return rentalRepo.findAll();
     }
 
     public List<Rental> getRentalByClientLoginAndPassword(String login, String password) {
         if (clientRepo.existsByLoginAndPassword(login, password)) {
-            return rentedBookRepo.getRentalByClientLoginAndPassword(login, password);
+            return rentalRepo.getRentalByClientLoginAndPassword(login, password);
         } else {
             throw new ClientNotFoundException("Wrong login or password.");
+        }
+    }
+
+    public Rental rentBook(String login, String password, Long bookId) {
+        if (bookRepo.existsById(bookId)) {
+            if (bookRepo.checkAvailabilityByBookid(bookId)) {
+                System.out.println("is available");
+                if (clientRepo.existsByLoginAndPassword(login, password)) {
+                    Rental newRental = rentalRepo.rentBook(login, password, bookId);
+                    bookRepo.changeAvailability(bookId);
+                    return newRental;
+                } else {
+                    throw new ClientNotFoundException("Wrong login or password.");
+                }
+            } else {
+                throw new RuntimeException("Book with id " + bookId + " is unavailable");
+            }
+        } else {
+            throw new BookNotFoundException("Book with id " + bookId + " not found");
         }
     }
 

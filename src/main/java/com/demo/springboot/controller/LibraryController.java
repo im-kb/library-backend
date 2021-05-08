@@ -61,6 +61,13 @@ public class LibraryController {
         return new ResponseEntity<>(updatedBook, HttpStatus.OK);
     }
 
+    @Transactional
+    @DeleteMapping("/books/delete_book")
+    public ResponseEntity<Book> deleteBook(@RequestParam(value = "book_id", required = true) Long bookId) {
+        Book removedBook = libraryService.deleteBookByBookId(bookId);
+        return new ResponseEntity<>(removedBook, HttpStatus.OK);
+    }
+
     //END OF BOOK SECTION_______________________________________
 
     //CLIENT SECTION_______________________________________
@@ -135,12 +142,20 @@ public class LibraryController {
         return new ResponseEntity<>(rentals, HttpStatus.OK);
     }
 
-    @GetMapping("/client/rentals")
+    @GetMapping("/books/rented/get_client_rentals")
     public ResponseEntity<List<Rental>> getClientRentals(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
         List<Rental> clientRentals = libraryService.getRentalByClientLoginAndPassword(login, password);
         return new ResponseEntity<>(clientRentals, HttpStatus.OK);
     }
 
+    @PostMapping("/books/rent")
+    public ResponseEntity<Rental> rentBook(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password, @RequestParam(value = "book_id", required = true) Long bookId)  {
+        Rental newRental = libraryService.rentBook(login,password,bookId);
+        return new ResponseEntity<>(newRental, HttpStatus.OK);
+    }
+
+
+    //ADMIN
     @PostMapping(value = "/admin/login")
     public ResponseEntity<HttpStatus> loginAdmin(@RequestParam(value = "login", required = true) String login, @RequestParam(value = "password", required = true) String password) {
         if (libraryService.adminExistsByLoginAndPassword(login, password) == false) {
